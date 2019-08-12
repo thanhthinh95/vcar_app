@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">VCar</string>
+    <string name="text_demo">Text demo</string>
+    <string name="vanban_demo">Đây là một đoạn văn bản rất hay ho và có nhiều điều thú vị do thinhdev viết ra để test mức độ hiển thị activity</string>
+    <string name="vanbandai_demo">Đây là một đoạn văn bản rất dài, rất rất dài, hay ho và có nhiều điều thú vị do thinhdev viết ra để test xem mức độ hiển thị nội dung trong activity có trơn tru và mượt mà như ý định. nếu không trơn chu thì cố mà sửa lại cho đúng nhé</string>
+
+
+    <!--Dialog-->
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_gotit">Đã hiểu</string>
+    <string name="dialog_back">Trở lại</string>
+
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+</resources>
