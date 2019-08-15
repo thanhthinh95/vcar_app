@@ -2,12 +2,14 @@ package com.example.vcar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -43,16 +45,31 @@ public class CheckActivity extends AppCompatActivity {
         Log.d("EVENT_ACTIVITY", "onStart Check");
         super.onStart();
 
-        prb_load.setProgress(10);
+        if(functionSystem.isNetworkAvailable()){
+            changeAnimationProgressBar(40);
+        }
+
+        if(true){
+            changeAnimationProgressBar(60);
+
+        }
 
 
-//        if(functionSystem.isNetworkAvailable()){
-//            functionSystem.showDialogSuccess("Đã kết nối mạng thành công");
-//        }else{
-//            Log.d("TAG", "Chua ket noi mang");
-//        }
+
+        changeAnimationProgressBar(80);
+        changeAnimationProgressBar(85);
+        changeAnimationProgressBar(90);
+        changeAnimationProgressBar(100);
+
+
     }
 
+    private void changeAnimationProgressBar(int value){
+        ObjectAnimator animation = ObjectAnimator.ofInt(prb_load, "progress", prb_load.getProgress(), value);
+        animation.setDuration(value * 20);
+        animation.setInterpolator(new DecelerateInterpolator());
+        animation.start();
+    }
 
     private void showDialogError(final String value){
         final AlertDialog.Builder builderDialog = new AlertDialog.Builder(this);
