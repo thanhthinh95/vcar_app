@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,12 +14,12 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import static android.provider.AlarmClock.EXTRA_MESSAGE;
+
 public class CheckActivity extends AppCompatActivity {
     final FunctionSystem functionSystem = new FunctionSystem(this);
 
-
     AlertDialog alertDialog;
-
     ProgressBar prb_load;
 
     @Override
@@ -51,7 +52,6 @@ public class CheckActivity extends AppCompatActivity {
 
         if(true){
             changeAnimationProgressBar(60);
-
         }
 
 
@@ -61,7 +61,14 @@ public class CheckActivity extends AppCompatActivity {
         changeAnimationProgressBar(90);
         changeAnimationProgressBar(100);
 
+        sendMessage();
+    }
 
+
+    public void sendMessage() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra(EXTRA_MESSAGE, 1);
+        startActivity(intent);
     }
 
     private void changeAnimationProgressBar(int value){
@@ -83,7 +90,7 @@ public class CheckActivity extends AppCompatActivity {
         view.findViewById(R.id.btn_dialog_error).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                alertDialog.dismiss();
+            alertDialog.dismiss();
             }
         });
     }
