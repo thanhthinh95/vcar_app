@@ -31,6 +31,8 @@ public class CheckActivity extends AppCompatActivity {
 
         setValue();
         setValueDefault();
+
+        sendMessage();
     }
 
     private void setValueDefault() {
@@ -61,7 +63,6 @@ public class CheckActivity extends AppCompatActivity {
         changeAnimationProgressBar(90);
         changeAnimationProgressBar(100);
 
-        sendMessage();
     }
 
 
