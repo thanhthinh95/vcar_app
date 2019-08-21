@@ -49,17 +49,16 @@
 
         <com.hanks.htextview.evaporate.EvaporateTextView
             android:id="@+id/txt_registration_title"
-            android:layout_width="276dp"
-            android:layout_height="34dp"
+            android:layout_width="300dp"
+            android:layout_height="30dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:fontFamily="sans-serif-condensed"
+            android:fontFamily="sans-serif-light"
             android:text="@string/text_demo"
-            android:textColor="@android:color/white"
-            android:textSize="25dp"
-            android:textStyle="bold"
             android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="20dp"
+            android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.492"
             app:layout_constraintStart_toStartOf="parent"
@@ -85,7 +84,7 @@
             android:id="@+id/imageView4"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="50dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/stat_sys_phone_call" />
@@ -95,11 +94,12 @@
             android:layout_width="320dp"
             android:layout_height="40dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="50dp"
             android:layout_marginEnd="8dp"
             android:ems="10"
             android:hint="@string/registration_hint_number_phone"
             android:inputType="phone"
+            android:text="0123456778"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.428"
@@ -116,7 +116,7 @@
             app:srcCompat="@android:drawable/ic_dialog_email" />
 
         <EditText
-            android:id="@+id/edit_forgotpassword_username"
+            android:id="@+id/edit_registration_email"
             android:layout_width="320dp"
             android:layout_height="40dp"
             android:layout_marginStart="8dp"
@@ -124,7 +124,8 @@
             android:layout_marginEnd="8dp"
             android:ems="10"
             android:hint="@string/registration_hint_email"
-            android:inputType="textEmailAddress"
+            android:inputType="text|textEmailAddress"
+            android:text="thanhthinh95@gmail.com"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView"
@@ -149,6 +150,7 @@
             android:ems="10"
             android:hint="@string/registration_hint_password_repeat"
             android:inputType="textPassword"
+            android:text="123456aB"
             android:textColor="@android:color/white"
             android:textColorLink="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
@@ -164,11 +166,12 @@
             android:ems="10"
             android:hint="@string/login_hint_password"
             android:inputType="textPassword"
+            android:text="123456aB"
             android:textColor="@android:color/white"
             android:textColorLink="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView5"
-            app:layout_constraintTop_toBottomOf="@+id/edit_forgotpassword_username" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_registration_email" />
 
         <Button
             android:id="@+id/btn_forgotpassword_forgotpassword"
@@ -194,7 +197,7 @@
             android:textColor="@android:color/white"
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.02"
+            app:layout_constraintHorizontal_bias="0.034"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_forgotpassword_forgotpassword" />
 

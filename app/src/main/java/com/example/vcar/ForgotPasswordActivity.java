@@ -39,7 +39,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private void addControls() {
         htxt_title = findViewById(R.id.htxt_forgotpassword_title);
-        edit_username = findViewById(R.id.edit_forgotpassword_username);
+        edit_username = findViewById(R.id.edit_registration_email);
         btn_forgotpassword = findViewById(R.id.btn_forgotpassword_forgotpassword);
         txt_back_login = findViewById(R.id.txt_forgotpassword_back_login);
     }

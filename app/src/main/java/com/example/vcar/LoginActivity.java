@@ -66,8 +66,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void addControls() {
-        htxt_title = findViewById(R.id.htxt_forgotpassword_title);
-        edit_username = findViewById(R.id.edit_forgotpassword_username);
+        htxt_title = findViewById(R.id.htxt_login_title);
+        edit_username = findViewById(R.id.edit_registration_email);
         edit_password = findViewById(R.id.edit_registration_pass_word_repeat);
         txt_registration = findViewById(R.id.txt_login_registration);
         txt_forgot_password = findViewById(R.id.txt_forgotpassword_back_login);

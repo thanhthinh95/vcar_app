@@ -9,6 +9,23 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="loading">Đang xử lý, vui lòng chờ!</string>
+
+    <!--message-->
+    <string name="message_success">Thành Công</string>
+    <string name="message_error">Có lỗi xảy ra. thử lại sau</string>
+    <string name="message_fill_info">Hãy điền đầy đủ thông tin</string>
+    <string name="message_email_invalid">Thư điện tử không hợp lệ</string>
+    <string name="message_password_invalid">Mật khẩu phải dài hơn 6 ký tự</string>
+    <string name="message_password_repeat_invalid">Xác nhận mật khẩu không khớp</string>
+
+
+    <!--server-->
+    <string name="host">http://192.168.1.3:4000</string>
+    <string name="token_api">ABC</string>
+    <integer name="timeout_server">10000</integer>
+
+
 
     <!--Dialog-->
     <string name="dialog_ok">OK</string>
@@ -17,7 +34,7 @@
 
     <!--Login-->
     <string name="title_activity_login">LoginActivity</string>
-    <string name="login_title">Đăng Nhập Hệ Thống</string>
+    <string name="login_title">Tự hào ứng dụng Việt</string>
     <string name="login_hint_username">Thư điện tử hoặc số điện thoại</string>
     <string name="login_hint_password">Mật khẩu</string>
     <string name="login_login">Đăng Nhập</string>
@@ -26,7 +43,7 @@
 
     <!--Registration-->
     <string name="title_activity_registration">RegistrationActivity</string>
-    <string name="registration_title">Đăng Ký Tài Khoản</string>
+    <string name="registration_title">Tính mạng con người là trên hết</string>
     <string name="registration_hint_email">Thư điện tử</string>
     <string name="registration_hint_number_phone">Số điện thoại</string>
     <string name="registration_hint_password">Mật khẩu</string>
@@ -34,9 +51,10 @@
     <string name="registration_registration">Đăng ký</string>
     <string name="registration_back_login">Về đăng nhập</string>
 
+
     <!--ForgotPassword-->
     <string name="title_activity_forgotpassword">ForgotPasswordActivity</string>
-    <string name="forgotpassword_title">Lấy Lại Mật Khẩu</string>
+    <string name="forgotpassword_title">An toàn thông tin cá nhân</string>
     <string name="forgotpassword_hint_username">Thư điện tử hoặc số điện thoại</string>
     <string name="forgotpassword_support">Khi bấm xác nhận, hệ thống sẽ gửi mật khẩu mới về hòm thư của bạn.</string>
     <string name="forgotpassword_forgotpassword">Xác Nhận</string>
