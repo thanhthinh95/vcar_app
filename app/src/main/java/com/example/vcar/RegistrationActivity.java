@@ -1,9 +1,12 @@
 package com.example.vcar;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,15 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.entity.Customer;
+import com.example.entity.Message;
 import com.hanks.htextview.base.HTextView;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class RegistrationActivity extends AppCompatActivity {
     @Override
@@ -27,7 +23,6 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onStart();
         setValues();
     }
-
 
     @Override
     protected void onStop() {
@@ -41,16 +36,15 @@ public class RegistrationActivity extends AppCompatActivity {
     Button btn_registration;
     TextView txt_back_login;
 
+
+    Customer customer = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-
         addControls();
         addEvents();
     }
-
-
 
     private void addControls() {
         htxt_title = findViewById(R.id.txt_registration_title);
@@ -60,7 +54,6 @@ public class RegistrationActivity extends AppCompatActivity {
         edit_password_repeat = findViewById(R.id.edit_registration_pass_word_repeat);
         btn_registration = findViewById(R.id.btn_forgotpassword_forgotpassword);
         txt_back_login = findViewById(R.id.txt_registration_back_login);
-
     }
 
     private void setValues() {
@@ -104,38 +97,128 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void registrationSystem() {
-        Customer customer = new Customer(
+        //B1: Gui mã xác thực về hòm thư, server trả lại mã cho client,
+        //B2: Nhập mã xác thực, nếu đúng như mã đã gửi về hòm thư, thực hiên đăng ký
+        customer = new Customer(
                 edit_password.getText().toString(),
                 edit_numberphone.getText().toString(),
                 edit_email.getText().toString(),
                 functionSystem.getAddress());
 
-
-
-        new test().execute(getResources().getString(R.string.host).toString() + "/api");
-
+        customer.setAction("verifyAccount");
+        new verifyAccountAPI().execute(customer.toString());
     }
 
 
-    private class test extends AsyncTask<String, String, String> {
+    private void verifyAccount(final String dataCodeFormAPI) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final LayoutInflater inflater = this.getLayoutInflater();
+        final View view = inflater.inflate(R.layout.layout_verify_account, null);
+        builder.setView(view);
 
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+//        alertDialog.setCancelable(false);
+        alertDialog.show();
+
+        final EditText edit_code = view.findViewById(R.id.edit_verify_code);
+        final TextView txt_time = view.findViewById(R.id.txt_verify_time);
+        final Button btn_ok = view.findViewById(R.id.btn_verify_ok);
+        final Button btn_again = view.findViewById(R.id.btn_verify_again);
+
+        final CountDownTimer downTimer = new CountDownTimer(120000, 1000) {
+            @Override
+            public void onTick(long l) {
+                txt_time.setText(getResources().getString(R.string.verify_message_time) + l/1000 + "s");
+            }
+
+            @Override
+            public void onFinish() {
+                txt_time.setText(getResources().getString(R.string.verify_message_timeout));
+            }
+        }.start();
+
+
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(txt_time.getText().toString().equals(getResources().getString(R.string.verify_message_timeout))){
+                    functionSystem.showDialogError(getResources().getString(R.string.verify_message_timeout));
+                }else if(edit_code.getText().toString().equals(dataCodeFormAPI)){
+                    //Neu ma xac thuc dung, thuc hien dang ky
+                    downTimer.cancel();
+                    alertDialog.dismiss();
+                    customer.setAction("registration");
+                    new registrationAPI().execute(customer.toString());
+                }else{
+                    functionSystem.showDialogError(getResources().getString(R.string.verify_message_invalid));
+                }
+            }
+        });
+
+
+        btn_again.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                downTimer.cancel();
+                alertDialog.dismiss();
+                registrationSystem();
+            }
+        });
+
+        alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                downTimer.cancel();
+            }
+        });
+    }
+
+
+    private class registrationAPI extends AsyncTask<String, String, String> {
         protected void onPreExecute() {
             super.onPreExecute();
             functionSystem.showLoading();
         }
 
         protected String doInBackground(String... params) {
-            return functionSystem.getMethod(params[0]);
-
+            return functionSystem.postMethod(getResources().getString(R.string.host).toString() + "customer", params[0]);
         }
 
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             functionSystem.hideLoading();
+            Message message = new Message(result);
+            if(message.getCode() == 200){
+                finish();
+            }else{
+                functionSystem.showDialogError(message.getMessage());
+            }
+        }
+    }
 
-            functionSystem.showDialogSuccess(result);
 
+    private class verifyAccountAPI extends AsyncTask<String, String, String> {
+        protected void onPreExecute() {
+            super.onPreExecute();
+            functionSystem.showLoading();
+        }
+
+        protected String doInBackground(String... params) {
+            return functionSystem.postMethod(getResources().getString(R.string.host).toString() + "customer", params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            functionSystem.hideLoading();
+            Message message = new Message(result);
+            if(message.getCode() == 200){
+                verifyAccount(message.getData());
+            }else{
+                functionSystem.showDialogError(message.getMessage());
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ package com.example.vcar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.hanks.htextview.base.HTextView;
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 public class LoginActivity extends AppCompatActivity {
+    FunctionSystem functionSystem = new FunctionSystem(this);
     HTextView htxt_title;
     EditText edit_username, edit_password;
     TextView txt_registration, txt_forgot_password;
@@ -92,19 +94,63 @@ public class LoginActivity extends AppCompatActivity {
                 sendMessageForgotPasswordActivity();
             }
         });
+        
+        btn_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(validateData()){
+                    loginSystem();   
+                }
+            }
+        });
 
     }
 
+    private void loginSystem() {
+        new loginAPI().execute();
+    }
+
+    private boolean validateData() {
+        boolean result = false;
+        if(edit_username.getText().toString().equals("") || edit_password.getText().toString().equals("")
+        ){
+            Toast.makeText(this, getResources().getString(R.string.message_fill_info), Toast.LENGTH_SHORT).show();
+        }else {
+            result = true;
+        }
+
+        return  result;
+    }
+
     private void sendMessageRegistrationActivity() {
-        Intent intent = new Intent(this, RegistrationActivity.class);
-        intent.putExtra(EXTRA_MESSAGE, 1);
-        startActivity(intent);
+        Intent intentRegistration = new Intent(this, RegistrationActivity.class);
+        intentRegistration.putExtra(EXTRA_MESSAGE, 1);
+        startActivity(intentRegistration);
     }
 
     private void sendMessageForgotPasswordActivity() {
         Intent intent = new Intent(this, ForgotPasswordActivity.class);
         intent.putExtra(EXTRA_MESSAGE, 1);
-        startActivity(intent);
+        startActivityForResult(intent, getResources().getInteger(R.integer.request_registration));
+    }
+
+
+    private class loginAPI extends AsyncTask<String, String, String> {
+        protected void onPreExecute() {
+            super.onPreExecute();
+            functionSystem.showLoading();
+        }
+
+        protected String doInBackground(String... params) {
+            return functionSystem.getMethod(getResources().getString(R.string.host) + "customer");
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            functionSystem.hideLoading();
+            functionSystem.showDialogSuccess(result);
+        }
     }
 }
 

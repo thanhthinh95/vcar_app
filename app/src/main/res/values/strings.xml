@@ -11,6 +11,12 @@
     <string name="title_notifications">Notifications</string>
     <string name="loading">Đang xử lý, vui lòng chờ!</string>
 
+    <!--intentValue-->
+    <integer name="request_registration">1</integer>
+
+
+
+
     <!--message-->
     <string name="message_success">Thành Công</string>
     <string name="message_error">Có lỗi xảy ra. thử lại sau</string>
@@ -21,16 +27,16 @@
 
 
     <!--server-->
-    <string name="host">http://192.168.1.3:4000</string>
+    <!--<string name="host">http://108.160.129.143:4000/api/</string>-->
+    <string name="host">http://192.168.1.3:4000/api/</string>
     <string name="token_api">ABC</string>
     <integer name="timeout_server">10000</integer>
-
-
 
     <!--Dialog-->
     <string name="dialog_ok">OK</string>
     <string name="dialog_got_it">Đã hiểu</string>
     <string name="dialog_back">Trở lại</string>
+
 
     <!--Login-->
     <string name="title_activity_login">LoginActivity</string>
@@ -50,6 +56,15 @@
     <string name="registration_hint_password_repeat">Nhập lại mật khẩu</string>
     <string name="registration_registration">Đăng ký</string>
     <string name="registration_back_login">Về đăng nhập</string>
+
+    <!--verify-->
+    <string name="verify_content">Mã xác thực đã được gửi về hòm thư của bạn. Kiểm tra và nhập mã để xác thực tài khoản</string>
+    <string name="verify_ok">Xác thực</string>
+    <string name="verify_again">Gửi lại</string>
+    <string name="verify_message_invalid">Mã xác thực không khớp, kiểm tra lại</string>
+    <string name="verify_message_time">Thời gian còn lại: </string>
+    <string name="verify_message_timeout">Hết thời gian hiệu lực</string>
+
 
 
     <!--ForgotPassword-->

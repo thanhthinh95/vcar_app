@@ -9,7 +9,11 @@ import android.net.ConnectivityManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+
+import com.example.entity.Message;
+
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -18,8 +22,6 @@ import java.net.NetworkInterface;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
-
-
 
 public class FunctionSystem {
     private Context context;
@@ -59,6 +61,15 @@ public class FunctionSystem {
         if(this.context == null) return  false;
         final ConnectivityManager connectivityManager = ((ConnectivityManager) this.context.getSystemService(Context.CONNECTIVITY_SERVICE));
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
+    }
+
+    public void showDialogMessage(String dataJsonFromService){
+         Message message = new Message(dataJsonFromService);
+         if(message.getCode() == 200){
+             showDialogSuccess(message.getMessage());
+         }else if(message.getCode() == 500){
+             showDialogError(message.getMessage());
+         }
     }
 
     public void showDialogSuccess(final String value){
@@ -130,6 +141,8 @@ public class FunctionSystem {
             URL url = new URL (urlString);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setConnectTimeout(R.integer.timeout_server);
+            urlConnection.setRequestMethod("GET");
+
             urlConnection.connect();
             InputStream stream = urlConnection.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
@@ -138,10 +151,41 @@ public class FunctionSystem {
                 buffer.append(line+"\n");
             }
 
+            urlConnection.disconnect();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return buffer.toString();
     }
 
+
+    public String postMethod(String urlString, String data){
+        StringBuffer buffer = new StringBuffer();
+        try {
+            URL url = new URL (urlString);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setConnectTimeout(R.integer.timeout_server);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("Content-Type","application/json");
+
+            DataOutputStream outputStream = new DataOutputStream(urlConnection.getOutputStream());
+            outputStream.writeBytes(data);
+            outputStream.flush();
+            outputStream.close();
+
+            urlConnection.connect();
+
+            InputStream stream = urlConnection.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                buffer.append(line+"\n");
+            }
+
+            urlConnection.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return buffer.toString();
+    }
 }

@@ -18,6 +18,7 @@ public class Customer {
     private Date created;
     private Date updated;
     private int status;
+    private String action;
 
     public Customer() {
     }
@@ -125,6 +126,14 @@ public class Customer {
         this.status = status;
     }
 
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
 
     @Override
     public String toString() {
@@ -138,6 +147,7 @@ public class Customer {
             if(getMacAddress() != null) jsonObject.put("macAddress", getMacAddress());
 
 
+            if(getAction() != null) jsonObject.put("action", getAction());
             return jsonObject.toString();
         } catch (JSONException e) {
             Log.w("error", "Failed convert Customer to String");
