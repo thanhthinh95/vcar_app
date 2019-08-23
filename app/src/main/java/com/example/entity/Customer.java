@@ -25,12 +25,10 @@ public class Customer {
     private String action;
     private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
-
     public Customer() {
     }
 
     public Customer(String data) {
-
         try {
             JSONObject jsonObject = new JSONObject(data);
             this.id = jsonObject.getString("_id");
