@@ -3,6 +3,7 @@ package com.example.vcar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -109,7 +110,6 @@ public class RegistrationActivity extends AppCompatActivity {
         new verifyAccountAPI().execute(customer.toString());
     }
 
-
     private void verifyAccount(final String dataCodeFormAPI) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final LayoutInflater inflater = this.getLayoutInflater();
@@ -174,6 +174,13 @@ public class RegistrationActivity extends AppCompatActivity {
         });
     }
 
+    private void sendResultIntent(String data){
+        customer = new Customer(data);
+        Intent intent = new Intent();
+        intent.putExtra("userName", customer.getNumberPhone());
+        setResult(getResources().getInteger(R.integer.result_registration), intent);
+        finish();
+    }
 
     private class registrationAPI extends AsyncTask<String, String, String> {
         protected void onPreExecute() {
@@ -191,7 +198,7 @@ public class RegistrationActivity extends AppCompatActivity {
             functionSystem.hideLoading();
             Message message = new Message(result);
             if(message.getCode() == 200){
-                finish();
+                sendResultIntent(message.getData());
             }else{
                 functionSystem.showDialogError(message.getMessage());
             }

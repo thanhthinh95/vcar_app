@@ -54,7 +54,7 @@ public class FunctionSystem {
             }
         } catch (Exception ex) {
         }
-        return "02:00:00:00:00:00";
+        return null;
     }
 
     public boolean isNetworkAvailable() {
@@ -188,4 +188,7 @@ public class FunctionSystem {
         }
         return buffer.toString();
     }
+
+
+
 }

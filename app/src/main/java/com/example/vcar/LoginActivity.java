@@ -1,18 +1,27 @@
 package com.example.vcar;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.entity.Customer;
+import com.example.entity.Message;
 import com.hanks.htextview.base.HTextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
@@ -39,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }, 1000);
         }else if(sumClickBack == 2){
-            finish();
+            sendResultIntentFinish();
         }
 
     }
@@ -63,6 +72,13 @@ public class LoginActivity extends AppCompatActivity {
 
         addControls();
         addEvents();
+
+        Intent intent = getIntent();
+        if(intent.getBooleanExtra("checkData", false)) {
+            edit_username.setText(intent.getStringExtra("userName"));
+            edit_password.setText(intent.getStringExtra("password"));
+            loginSystem();
+        }
     }
 
 
@@ -84,36 +100,80 @@ public class LoginActivity extends AppCompatActivity {
         txt_registration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendMessageRegistrationActivity();
+            sendIntentRegistrationActivity();
 
             }
         });
         txt_forgot_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendMessageForgotPasswordActivity();
+            sendIntentForgotPasswordActivity();
             }
         });
         
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(validateData()){
-                    loginSystem();   
-                }
+            if(validateData()){
+                loginSystem();
+            }
             }
         });
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //ActivityRegistration tra ve username da dang ky thanh cong
+        if(requestCode == getResources().getInteger(R.integer.request_registration)
+                && resultCode == getResources().getInteger(R.integer.result_registration)){
+            edit_username.setText(data.getStringExtra("userName"));
+            edit_password.setText("");
+            edit_password.requestFocus();
+            functionSystem.showDialogSuccess(getResources().getString(R.string.message_success));
+        }else if(requestCode == getResources().getInteger(R.integer.request_forgotpassword)
+                && resultCode == getResources().getInteger(R.integer.result_forgotpassword)){
+            edit_username.setText(data.getStringExtra("userName"));
+            edit_password.setText("");
+            edit_password.requestFocus();
+            functionSystem.showDialogSuccess(getResources().getString(R.string.forgotpassword_message_success));
+        }
+    }
+
+
+    private void sendResultIntent(String data){
+        Customer customer = new Customer(data);
+        Intent intent = new Intent();
+        intent.putExtra("id", customer.getId());
+        intent.putExtra("userName", edit_username.getText().toString());
+        intent.putExtra("password", edit_password.getText().toString());
+        intent.putExtra("macAddress", customer.getMacAddress());
+        setResult(getResources().getInteger(R.integer.result_login), intent);
+        finish();
+    }
+
+    private void sendResultIntentFinish(){
+        Intent intent = new Intent();
+        intent.putExtra("finish", true);
+        setResult(getResources().getInteger(R.integer.result_login_finish), intent);
+        finish();
     }
 
     private void loginSystem() {
-        new loginAPI().execute();
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("userName", edit_username.getText().toString());
+            jsonObject.put("password", edit_password.getText().toString());
+            jsonObject.put("action", "login");
+            new loginAPI().execute(jsonObject.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean validateData() {
         boolean result = false;
-        if(edit_username.getText().toString().equals("") || edit_password.getText().toString().equals("")
-        ){
+        if(edit_username.getText().toString().equals("") || edit_password.getText().toString().equals("")){
             Toast.makeText(this, getResources().getString(R.string.message_fill_info), Toast.LENGTH_SHORT).show();
         }else {
             result = true;
@@ -122,18 +182,17 @@ public class LoginActivity extends AppCompatActivity {
         return  result;
     }
 
-    private void sendMessageRegistrationActivity() {
-        Intent intentRegistration = new Intent(this, RegistrationActivity.class);
-        intentRegistration.putExtra(EXTRA_MESSAGE, 1);
-        startActivity(intentRegistration);
-    }
-
-    private void sendMessageForgotPasswordActivity() {
-        Intent intent = new Intent(this, ForgotPasswordActivity.class);
-        intent.putExtra(EXTRA_MESSAGE, 1);
+    private void sendIntentRegistrationActivity() {
+        Intent intent = new Intent(this, RegistrationActivity.class);
+//        intent.putExtra(EXTRA_MESSAGE, 1);
         startActivityForResult(intent, getResources().getInteger(R.integer.request_registration));
     }
 
+    private void sendIntentForgotPasswordActivity() {
+        Intent intent = new Intent(this, ForgotPasswordActivity.class);
+//        intent.putExtra(EXTRA_MESSAGE, 1);
+        startActivityForResult(intent, getResources().getInteger(R.integer.request_forgotpassword));
+    }
 
     private class loginAPI extends AsyncTask<String, String, String> {
         protected void onPreExecute() {
@@ -142,16 +201,24 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         protected String doInBackground(String... params) {
-            return functionSystem.getMethod(getResources().getString(R.string.host) + "customer");
+            return functionSystem.postMethod(getResources().getString(R.string.host).toString() + "customer", params[0]);
         }
 
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             functionSystem.hideLoading();
-            functionSystem.showDialogSuccess(result);
+            Message message = new Message(result);
+            if(message.getCode() == 200){
+                sendResultIntent(message.getData());
+            }else{
+                functionSystem.showDialogError(message.getMessage());
+                edit_password.setText("");
+            }
         }
     }
+
+
 }
 
 

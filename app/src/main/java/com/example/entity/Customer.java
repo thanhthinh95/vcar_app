@@ -5,7 +5,10 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Customer {
@@ -17,21 +20,36 @@ public class Customer {
     private String macAddress;
     private Date created;
     private Date updated;
-    private int status;
+    private int status = -9999;//default value null
+
     private String action;
+    private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
 
     public Customer() {
     }
 
-//    public Customer(JSONObject jsonObject) {
-//        this._id = jsonObject.getString("_id");
-//        this.name = jsonObject.getString("name");
-//        this.numberPhone = jsonObject.getString("numberPhone");
-//        this.macAddress = jsonObject.getJSONArray("macAddress");
-//        this.created = jsonObject.getS("_id");
-//        this.updated = jsonObject.getString("_id");
-//        this.status = jsonObject.getString("_id");
-//    }
+    public Customer(String data) {
+
+        try {
+            JSONObject jsonObject = new JSONObject(data);
+            this.id = jsonObject.getString("_id");
+            this.name = jsonObject.getString("name");
+            this.password = jsonObject.getString("password");
+            this.numberPhone = jsonObject.getString("numberPhone");
+            this.email = jsonObject.getString("email");
+            this.macAddress = jsonObject.getString("macAddress");
+
+            this.status = jsonObject.getInt("status");
+
+            this.created = dateFormat.parse(jsonObject.getString("created"));
+            this.updated = dateFormat.parse(jsonObject.getString("updated"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     public Customer(String id, String name, String password, String numberPhone, String email, String macAddress, Date created, Date updated, int status) {
@@ -145,9 +163,11 @@ public class Customer {
             if(getNumberPhone() != null) jsonObject.put("numberPhone", getNumberPhone());
             if(getEmail() != null) jsonObject.put("email", getEmail());
             if(getMacAddress() != null) jsonObject.put("macAddress", getMacAddress());
-
-
+            if(getCreated() != null) jsonObject.put("created", dateFormat.format(getCreated()));
+            if(getUpdated() != null) jsonObject.put("updated", dateFormat.format(getUpdated()));
+            if(getStatus() != -9999) jsonObject.put("status", getStatus());
             if(getAction() != null) jsonObject.put("action", getAction());
+
             return jsonObject.toString();
         } catch (JSONException e) {
             Log.w("error", "Failed convert Customer to String");

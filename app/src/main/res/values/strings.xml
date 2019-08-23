@@ -6,16 +6,43 @@
 
     <!--app-->
     <string name="back_app">Nhấn 2 lần liên tiếp để thoát</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
     <string name="loading">Đang xử lý, vui lòng chờ!</string>
 
+<!--    home-->
+    <string name="home_title">Bạn muốn đi đâu ?</string>
+    <string name="home_hint_start">Chọn điểm khởi hành</string>
+    <string name="home_hint_stop">Chọn điểm dừng</string>
+
+
+<!--    ticket-->
+    <string name="ticket_title">Vé của tôi</string>
+
+<!--    notification-->
+    <string name="notification_title">Thông báo</string>
+
+<!--    account-->
+
+    <string name="account_title">Tài khoản của tôi</string>
+
+    <!--    navi menu-->
+    <string name="menu_home">Trang chủ</string>
+    <string name="menu_ticket">Vé của tôi</string>
+    <string name="menu_notification">Thông báo</string>
+    <string name="menu_account">Tài khoản</string>
+
     <!--intentValue-->
-    <integer name="request_registration">1</integer>
+    <integer name="request_check">862</integer>
+    <integer name="result_check">876</integer>
 
+    <integer name="request_login">122</integer>
+    <integer name="result_login">221</integer>
+    <integer name="result_login_finish">532</integer>
 
+    <integer name="request_registration">123</integer>
+    <integer name="result_registration">321</integer>
 
+    <integer name="request_forgotpassword">439</integer>
+    <integer name="result_forgotpassword">934</integer>
 
     <!--message-->
     <string name="message_success">Thành Công</string>
@@ -65,8 +92,6 @@
     <string name="verify_message_time">Thời gian còn lại: </string>
     <string name="verify_message_timeout">Hết thời gian hiệu lực</string>
 
-
-
     <!--ForgotPassword-->
     <string name="title_activity_forgotpassword">ForgotPasswordActivity</string>
     <string name="forgotpassword_title">An toàn thông tin cá nhân</string>
@@ -74,6 +99,7 @@
     <string name="forgotpassword_support">Khi bấm xác nhận, hệ thống sẽ gửi mật khẩu mới về hòm thư của bạn.</string>
     <string name="forgotpassword_forgotpassword">Xác Nhận</string>
     <string name="forgotpassword_back_login">Về đăng nhập</string>
+    <string name="forgotpassword_message_success">Kiểm tra mật khẩu trong hòm thư, và đăng nhập lại</string>
 
 
 

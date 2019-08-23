@@ -1,75 +1,179 @@
 package com.example.vcar;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.ObjectAnimator;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 public class CheckActivity extends AppCompatActivity {
     final FunctionSystem functionSystem = new FunctionSystem(this);
 
-    AlertDialog alertDialog;
     ProgressBar prb_load;
+
+
+    @Override
+    public void onBackPressed() {//Vô hiệu hóa nút quay trở về màn hình trước
+//        super.onBackPressed();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check);
 
-        Log.d("EVENT_ACTIVITY", "onCreate Check");
+        addControls();
 
-        setValue();
-        setValueDefault();
 
-        sendMessage();
+        if(functionSystem.isNetworkAvailable()){
+            changeAnimationProgressBar(10);
+        }
+
+        if(functionSystem.getAddress() != null){
+            changeAnimationProgressBar(30);
+        }
+
+        checkDataLoginOld();
+
+
+        setValues();
     }
 
-    private void setValueDefault() {
-        prb_load.setMax(100);
-    }
-
-    private void setValue() {
+    private void addControls() {
         prb_load = findViewById(R.id.prb_check_load);
     }
 
-    @Override
-    protected void onStart() {
-        Log.d("EVENT_ACTIVITY", "onStart Check");
-        super.onStart();
-
-        if(functionSystem.isNetworkAvailable()){
-            changeAnimationProgressBar(40);
-        }
-
-        if(true){
-            changeAnimationProgressBar(60);
-        }
-
-
-
-        changeAnimationProgressBar(80);
-        changeAnimationProgressBar(85);
-        changeAnimationProgressBar(90);
-        changeAnimationProgressBar(100);
-
+    private void setValues() {
+        prb_load.setMax(100);
     }
 
 
-    public void sendMessage() {
+    private void checkDataLoginOld(){
+        String data = readFileInfo();
+        changeAnimationProgressBar(60);
+
+        String userName = null, password = null;
+        if(data != null){
+            try {
+                JSONObject jsonObject = new JSONObject(data);
+                userName = jsonObject.getString("userName");
+                password = jsonObject.getString("password");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        sendIntentToLoginActivity(userName, password);
+    }
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //ActivityLogin tra ve username da dang nhap thanh cong
+        if(requestCode == getResources().getInteger(R.integer.request_login)
+                && resultCode == getResources().getInteger(R.integer.result_login)){
+            changeAnimationProgressBar(80);
+
+            try {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("id", data.getStringExtra("id"));
+                jsonObject.put("userName", data.getStringExtra("userName"));
+                jsonObject.put("password", data.getStringExtra("password"));
+                jsonObject.put("macAddress", data.getStringExtra("macAddress"));
+
+                writeFileInfo(jsonObject.toString());
+                sendResultIntent(data.getStringExtra("id"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }else if(requestCode == getResources().getInteger(R.integer.request_login)
+            && resultCode == getResources().getInteger(R.integer.result_login_finish)){
+            sendResultIntent(null);
+        }
+    }
+
+    private void sendResultIntent(String dataId){
+        changeAnimationProgressBar(100);
+        Intent intent = new Intent();
+
+        if(dataId == null){//Activity gui yeu cau finish()
+            setResult(getResources().getInteger(R.integer.result_login_finish), intent);
+        }else{
+            intent.putExtra("id", dataId);
+            setResult(getResources().getInteger(R.integer.result_check), intent);
+        }
+
+        finish();
+    }
+
+    private void writeFileInfo(String data) {
+        changeAnimationProgressBar(90);
+
+        try {
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(this.openFileOutput("infoAccount.txt", this.MODE_PRIVATE));
+            outputStreamWriter.write(data);
+            outputStreamWriter.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String readFileInfo(){
+        try {
+            changeAnimationProgressBar(50);
+            InputStream inputStream = this.openFileInput("infoAccount.txt");
+            if(inputStream != null){//Da co file, tien hanh doc noi dung
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString;
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append(receiveString);
+                }
+
+                inputStream.close();
+                bufferedReader.close();
+                return stringBuilder.toString();
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public void sendIntentToLoginActivity(String userName, String password) {
+        changeAnimationProgressBar(70);
         Intent intent = new Intent(this, LoginActivity.class);
-        intent.putExtra(EXTRA_MESSAGE, 1);
-        startActivity(intent);
+        if(userName != null && password != null){
+            intent.putExtra("checkData", true);
+            intent.putExtra("userName", userName);
+            intent.putExtra("password", password);
+        }else {
+            intent.putExtra("checkData", false);
+        }
+        startActivityForResult(intent, getResources().getInteger(R.integer.request_login));
     }
 
     private void changeAnimationProgressBar(int value){
@@ -77,64 +181,5 @@ public class CheckActivity extends AppCompatActivity {
         animation.setDuration(value * 20);
         animation.setInterpolator(new DecelerateInterpolator());
         animation.start();
-    }
-
-    private void showDialogError(final String value){
-        final AlertDialog.Builder builderDialog = new AlertDialog.Builder(this);
-        final LayoutInflater inflaterDialog = getLayoutInflater();
-        View view = inflaterDialog.inflate(R.layout.layout_dialog_error, null);
-        builderDialog.setView(view);
-        alertDialog = builderDialog.create();
-        alertDialog.show();
-
-        ((TextView) view.findViewById(R.id.txt_dialog_error)).setText(value);
-        view.findViewById(R.id.btn_dialog_error).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-            alertDialog.dismiss();
-            }
-        });
-    }
-
-
-
-
-    @Override
-    protected void onResume() {
-        Log.d("EVENT_ACTIVITY", "onResume Check");
-        super.onResume();
-    }
-
-
-
-
-    @Override
-    protected void onPause() {
-        Log.d("EVENT_ACTIVITY", "onPause Check");
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        Log.d("EVENT_ACTIVITY", "onStop Check");
-        super.onStop();
-    }
-
-
-    @Override
-    protected void onRestart() {
-        Log.d("EVENT_ACTIVITY", "onRestart Check");
-        super.onRestart();
-    }
-
-    @Override
-    protected void onDestroy() {
-        Log.d("EVENT_ACTIVITY", "onDestroy Check");
-        super.onDestroy();
-    }
-
-    @Override
-    public void onBackPressed() {//Vô hiệu hóa nút quay trở về màn hình trước
-//        super.onBackPressed();
     }
 }
