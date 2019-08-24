@@ -189,7 +189,7 @@ public class RegistrationActivity extends AppCompatActivity {
         }
 
         protected String doInBackground(String... params) {
-            return functionSystem.postMethod(getResources().getString(R.string.host).toString() + "customer", params[0]);
+            return functionSystem.postMethod(getResources().getString(R.string.host_api).toString() + "customer", params[0]);
         }
 
         @Override
@@ -213,7 +213,7 @@ public class RegistrationActivity extends AppCompatActivity {
         }
 
         protected String doInBackground(String... params) {
-            return functionSystem.postMethod(getResources().getString(R.string.host).toString() + "customer", params[0]);
+            return functionSystem.postMethod(getResources().getString(R.string.host_api).toString() + "customer", params[0]);
         }
 
         @Override

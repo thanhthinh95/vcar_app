@@ -3,23 +3,33 @@ package com.example.vcar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.entity.Message;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.NetworkInterface;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.List;
 
@@ -63,6 +73,7 @@ public class FunctionSystem {
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 
+
     public void showDialogMessage(String dataJsonFromService){
          Message message = new Message(dataJsonFromService);
          if(message.getCode() == 200){
@@ -70,6 +81,11 @@ public class FunctionSystem {
          }else if(message.getCode() == 500){
              showDialogError(message.getMessage());
          }
+    }
+
+    public void hideKeyboardFrom(View view) {
+        InputMethodManager imm = (InputMethodManager) this.context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     public void showDialogSuccess(final String value){
@@ -166,12 +182,11 @@ public class FunctionSystem {
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setConnectTimeout(R.integer.timeout_server);
             urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("Content-Type","application/json");
+            urlConnection.setRequestProperty("Content-Type","application/json; charset=utf-8");
 
-            DataOutputStream outputStream = new DataOutputStream(urlConnection.getOutputStream());
-            outputStream.writeBytes(data);
-            outputStream.flush();
-            outputStream.close();
+            Writer writer = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream(), "UTF-8"));
+            writer.write(data);
+            writer.close();
 
             urlConnection.connect();
 
@@ -188,7 +203,4 @@ public class FunctionSystem {
         }
         return buffer.toString();
     }
-
-
-
 }

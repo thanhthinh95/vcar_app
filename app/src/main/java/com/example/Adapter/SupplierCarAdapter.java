@@ -4,9 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -14,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.entity.ItemHomeSupplierCar;
+import com.example.vcar.FunctionSystem;
 import com.example.vcar.R;
 
 import java.util.List;
@@ -23,42 +22,58 @@ public class SupplierCarAdapter extends RecyclerView.Adapter<SupplierCarAdapter.
     private LayoutInflater layoutInflater;
     private Context context;
 
+    FunctionSystem functionSystem;
 
     public SupplierCarAdapter(Context context, List<ItemHomeSupplierCar> listData) {
         this.listData = listData;
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
+
+        functionSystem = new FunctionSystem(context);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-
-        public TextView txt_nameCarSupplier, txt_route, txt_timeStart;
-        public ProgressBar pro_vote;
+        public TextView txt_name, txt_route, txt_fare, txt_numberPhone;
         public RecyclerView rec_listData;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            txt_nameCarSupplier = itemView.findViewById(R.id.txt_home_supplierCar_name);
+            addControls();
+            addEvents();
+        }
+
+        private void addControls() {
+            txt_name = itemView.findViewById(R.id.txt_home_supplierCar_name);
             txt_route = itemView.findViewById(R.id.txt_home_supplierCar_route);
             rec_listData = itemView.findViewById(R.id.recy_home_supplierCar_listCar);
-            txt_timeStart = itemView.findViewById(R.id.txt_home_supplierCar_timeStartEarly);
-            pro_vote = itemView.findViewById(R.id.pro_home_supplierCar_vote);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context, txt_nameCarSupplier.getText(),Toast.LENGTH_SHORT).show();
-                }
-            });
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    Toast.makeText(context,"Long item clicked " + txt_nameCarSupplier.getText() , Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-            });
+            txt_fare = itemView.findViewById(R.id.txt_home_supplierCar_fare);
+            txt_numberPhone = itemView.findViewById(R.id.txt_home_supplierCar_numberPhone);
         }
+
+        private void addEvents() {
+            txt_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showInfoCarSupplier(getAdapterPosition());
+                }
+            });
+
+            txt_route.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showInfoCarSupplier(getAdapterPosition());
+                }
+            });
+
+
+        }
+
+        private void showInfoCarSupplier(int position){
+            functionSystem.showDialogSuccess("Thong tin nha xe: " + listData.get(position).getName());
+        }
+
     }
+
 
 
     @Override
@@ -70,11 +85,11 @@ public class SupplierCarAdapter extends RecyclerView.Adapter<SupplierCarAdapter.
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         ItemHomeSupplierCar itemRecyclerHome = listData.get(position);
-        holder.txt_nameCarSupplier.setText(itemRecyclerHome.getNameCarSupplier());
-        holder.txt_timeStart.setText(itemRecyclerHome.getEarliestTimeStart());
+        holder.txt_name.setText(itemRecyclerHome.getName());
+        holder.txt_fare.setText(itemRecyclerHome.getFare());
         holder.txt_route.setText(itemRecyclerHome.getRoute());
+        holder.txt_numberPhone.setText(itemRecyclerHome.getNumberPhone());
 
-//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         holder.rec_listData.setLayoutManager(mLayoutManager);
         CarAdapter carAdapter = new CarAdapter(context, itemRecyclerHome.getListCar());

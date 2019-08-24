@@ -32,7 +32,6 @@ public class Point {
     }
 
     public Point(String data) {
-
         try {
             JSONObject jsonObject = new JSONObject(data);
             this.id = jsonObject.getString("_id");

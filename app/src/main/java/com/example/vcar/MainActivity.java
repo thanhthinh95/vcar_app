@@ -29,6 +29,9 @@ import android.view.Display;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 public class MainActivity extends AppCompatActivity {
@@ -111,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == getResources().getInteger(R.integer.request_check) && resultCode == getResources().getInteger(R.integer.result_check)){
             buildStart();
             addFragment(new fragmentHome(), null);
-
         }else if(requestCode == getResources().getInteger(R.integer.request_check) && resultCode == getResources().getInteger(R.integer.result_login_finish)){
             finish();
         }

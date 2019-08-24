@@ -43,4 +43,5 @@ dependencies {
     implementation "com.hanks:htextview-fall:$htextview_version"        // optional
 
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'//hieu ung loading
+    implementation 'com.squareup.picasso:picasso:2.71828'//Load image
 }

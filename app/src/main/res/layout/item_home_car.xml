@@ -3,12 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="110dp"
     android:layout_height="110dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/background_item_recycler_car"
+    >
 
         <ImageView
             android:id="@+id/img_home_car_image"
             android:src="@drawable/vcar_icon_app"
             android:layout_width="match_parent"
+            android:scaleType="centerCrop"
             android:layout_height="90dp"/>
 
 

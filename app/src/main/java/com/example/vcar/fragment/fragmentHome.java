@@ -1,16 +1,22 @@
 package com.example.vcar.fragment;
 
-import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,6 +26,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.Adapter.SupplierCarAdapter;
 import com.example.entity.ItemHomeCar;
@@ -31,17 +38,23 @@ import com.example.vcar.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class fragmentHome extends Fragment implements View.OnContextClickListener{
     View view;
+    Button btn_removeStart, btn_removeEnd;
+    ImageView img_start, img_end, img_move;
     RecyclerView recyclerView;
     AutoCompleteTextView auto_start;
-    AutoCompleteTextView auto_stop;
+    AutoCompleteTextView auto_end;
+    SwipeRefreshLayout srl_data;
 
     FunctionSystem functionSystem;
+    static int y;
 
     @Override
     public boolean onContextClick(View view) {
@@ -62,57 +75,171 @@ public class fragmentHome extends Fragment implements View.OnContextClickListene
     }
 
     private void setValues() {
-
-        List<ItemHomeSupplierCar> arrayList = new ArrayList<>();
-        List<ItemHomeCar> itemHomeCars = new ArrayList<>();
-
-        itemHomeCars.add(new ItemHomeCar("e", "","BG-GFG213"));
-        itemHomeCars.add(new ItemHomeCar("e", "","BG-GFG213"));
-        itemHomeCars.add(new ItemHomeCar("e", "","BG-GFG213"));
-        itemHomeCars.add(new ItemHomeCar("e", "","BG-GFG213"));
-        itemHomeCars.add(new ItemHomeCar("e", "","BG-GFG213"));
-        itemHomeCars.add(new ItemHomeCar("e", "","BG-GFG213"));
-        itemHomeCars.add(new ItemHomeCar("e", "","BG-GFG213"));
-        itemHomeCars.add(new ItemHomeCar("e", "","BG-GFG213"));
-        itemHomeCars.add(new ItemHomeCar("e", "","BG-GFG213"));
-
-
-        arrayList.add(new ItemHomeSupplierCar("Thanh Ha", "Hà Nội - Tuyên Quan", itemHomeCars, "04:45", 3));
-        arrayList.add(new ItemHomeSupplierCar("Thanh Ha", "Hà Nội - Tuyên Quan", itemHomeCars, "04:45", 3));
-        arrayList.add(new ItemHomeSupplierCar("Thanh Ha", "Hà Nội - Tuyên Quan", itemHomeCars, "04:45", 3));
-        arrayList.add(new ItemHomeSupplierCar("Thanh Ha", "Hà Nội - Tuyên Quan", itemHomeCars, "04:45", 3));
-        arrayList.add(new ItemHomeSupplierCar("Thanh Ha", "Hà Nội - Tuyên Quan", itemHomeCars, "04:45", 3));
-        arrayList.add(new ItemHomeSupplierCar("Thanh Ha", "Hà Nội - Tuyên Quan", itemHomeCars, "04:45", 3));
-
-
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        SupplierCarAdapter homeAdapter = new SupplierCarAdapter(view.getContext(), arrayList);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(homeAdapter);
-
         new getPointAPI().execute();
-
     }
 
     private void addControls() {
         recyclerView = view.findViewById(R.id.recy_home_data);
         auto_start = view.findViewById(R.id.auto_home_start);
-        auto_stop = view.findViewById(R.id.auto_home_stop);
+        auto_end = view.findViewById(R.id.auto_home_end);
+        btn_removeStart = view.findViewById(R.id.btn_home_removeStart);
+        btn_removeEnd = view.findViewById(R.id.btn_home_removeEnd);
+        srl_data = view.findViewById(R.id.srl_home_data);
+        img_start = view.findViewById(R.id.img_home_start);
+        img_move = view.findViewById(R.id.img_home_move);
+        img_end = view.findViewById(R.id.img_home_end);
     }
 
     private void addEvents() {
-        auto_stop.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        auto_end.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if(i == EditorInfo.IME_ACTION_GO){
-
-                    Log.w("TAG", "Ban vua click vao nut go");
+                    functionSystem.hideKeyboardFrom(view);
+                    functionSystem.hideKeyboardFrom(view);
+                    searchCarSupplier();
                     return true;
                 }
                 return false;
             }
         });
+
+        img_start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                movePoint();
+            }
+        });
+
+        img_move.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                movePoint();
+            }
+        });
+
+        img_end.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                movePoint();
+            }
+        });
+
+        srl_data.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                searchCarSupplier();
+            }
+        });
+
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+                    Log.w("TAG", "bay");
+                    if(y<=0){
+                        Log.w("TAG", "up");
+
+                    }
+                    else{
+                        y=0;
+                        Log.w("TAG", "down");
+
+                    }
+
+                }
+
+
+
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                y=dy;
+            }
+        });
+
+
+
+        auto_start.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(auto_start.getText().toString().equals("")){
+                    btn_removeStart.setVisibility(View.INVISIBLE);
+                    functionSystem.hideKeyboardFrom(view);
+                    searchCarSupplier();
+                }else{
+                    btn_removeStart.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+
+        auto_end.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(auto_end.getText().toString().equals("")){
+                    btn_removeEnd.setVisibility(View.INVISIBLE);
+                    functionSystem.hideKeyboardFrom(view);
+                    searchCarSupplier();
+                }else{
+                    btn_removeEnd.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        btn_removeStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                auto_start.setText("");
+            }
+        });
+
+        btn_removeEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                auto_end.setText("");
+            }
+        });
+    }
+
+    private void movePoint(){
+        String start = auto_start.getText().toString();
+        String end = auto_end.getText().toString();
+
+        auto_start.setText(end);
+        auto_end.setText(start);
+
+        searchCarSupplier();
+    }
+
+    private void searchCarSupplier() {
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("startPoint", auto_start.getText().toString());
+            jsonObject.put("endPoint", auto_end.getText().toString());
+            jsonObject.put("action", "searchCarSupplier");
+            auto_start.clearFocus();
+            auto_end.clearFocus();
+            new searchCarSupplierAPI().execute(jsonObject.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void bindValuesPointStartAndStop(List<Point> points){
@@ -126,8 +253,53 @@ public class fragmentHome extends Fragment implements View.OnContextClickListene
         auto_start.setThreshold(1);//will start working from first character
         auto_start.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
 
-        auto_stop.setThreshold(1);//will start working from first character
-        auto_stop.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+        auto_end.setThreshold(1);//will start working from first character
+        auto_end.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+    }
+
+    private class searchCarSupplierAPI extends AsyncTask<String, String, String> {
+        protected void onPreExecute() {
+            super.onPreExecute();
+            srl_data.animate();
+            srl_data.setRefreshing(true);
+        }
+
+        protected String doInBackground(String... params) {
+            return functionSystem.postMethod(getResources().getString(R.string.host_api).toString() + "car_supplier", params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            srl_data.setRefreshing(false);
+            Message message = new Message(result);
+            if(message.getCode() == 200){
+                try {
+                    JSONArray jsonArray = new JSONArray(message.getData());
+                    List<ItemHomeSupplierCar> homeSupplierCars = new ArrayList<ItemHomeSupplierCar>();
+
+                    for (int i = 0; i < jsonArray.length(); i++){
+                        homeSupplierCars.add(new ItemHomeSupplierCar(jsonArray.get(i).toString()));
+                    }
+
+                    bindValuesCarSupplier(homeSupplierCars);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                functionSystem.showDialogError(message.getMessage());
+            }
+        }
+    }
+
+
+
+    private void bindValuesCarSupplier(List<ItemHomeSupplierCar> homeSupplierCars) {
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        SupplierCarAdapter homeAdapter = new SupplierCarAdapter(view.getContext(), homeSupplierCars);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(homeAdapter);
     }
 
 
@@ -138,7 +310,7 @@ public class fragmentHome extends Fragment implements View.OnContextClickListene
         }
 
         protected String doInBackground(String... params) {
-            return functionSystem.getMethod(getResources().getString(R.string.host).toString() + "point");
+            return functionSystem.getMethod(getResources().getString(R.string.host_api).toString() + "point");
         }
 
         @Override
@@ -155,6 +327,7 @@ public class fragmentHome extends Fragment implements View.OnContextClickListene
                         points.add(new Point(jsonArray.get(i).toString()));
                     }
                     bindValuesPointStartAndStop(points);
+                    searchCarSupplier();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

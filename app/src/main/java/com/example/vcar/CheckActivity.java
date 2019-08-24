@@ -2,11 +2,13 @@ package com.example.vcar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 
@@ -33,24 +35,35 @@ public class CheckActivity extends AppCompatActivity {
 
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        if(functionSystem.isNetworkAvailable()){
+            changeAnimationProgressBar(10);
+
+            if(functionSystem.getAddress() != null){
+                changeAnimationProgressBar(30);
+
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+
+                    checkDataLoginOld();
+                }else{
+                    functionSystem.showDialogError("Chưa có quyền gọi điện");
+                }
+            }else{
+                functionSystem.showDialogError("Không lấy được địa chỉ MAC");
+
+            }
+        }else{
+            functionSystem.showDialogError("Kiểm tra lại kết nối mạng");
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check);
 
         addControls();
-
-
-        if(functionSystem.isNetworkAvailable()){
-            changeAnimationProgressBar(10);
-        }
-
-        if(functionSystem.getAddress() != null){
-            changeAnimationProgressBar(30);
-        }
-
-        checkDataLoginOld();
-
-
         setValues();
     }
 
