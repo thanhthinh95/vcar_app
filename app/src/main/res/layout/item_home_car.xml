@@ -11,7 +11,7 @@
             android:id="@+id/img_home_car_image"
             android:src="@drawable/vcar_icon_app"
             android:layout_width="match_parent"
-            android:scaleType="centerCrop"
+            android:scaleType="fitXY"
             android:layout_height="90dp"/>
 
 

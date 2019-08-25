@@ -84,7 +84,7 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.MyViewHolder> {
         if(item.getImage().length() > 0){
             Picasso.get()
                     .load(context.getResources().getString(R.string.host) + item.getImage())
-                    .placeholder(R.drawable.ic_cloud_download_black_24dp)
+                    .placeholder(R.drawable.icon_download)
                     .error(R.drawable.ic_directions_bus_black_24dp)
                     .into(holder.img_Image);
 

@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.URL;
 
 public class CheckActivity extends AppCompatActivity {
     final FunctionSystem functionSystem = new FunctionSystem(this);
@@ -41,20 +42,20 @@ public class CheckActivity extends AppCompatActivity {
             changeAnimationProgressBar(10);
 
             if(functionSystem.getAddress() != null){
-                changeAnimationProgressBar(30);
+                changeAnimationProgressBar(20);
 
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
 
+                if (functionSystem.pingToServer()) {
+                    changeAnimationProgressBar(30);
                     checkDataLoginOld();
                 }else{
-                    functionSystem.showDialogError("Chưa có quyền gọi điện");
+                    functionSystem.showDialogError(getResources().getString(R.string.check_error_server) + " " + getResources().getString(R.string.ipServer));
                 }
             }else{
-                functionSystem.showDialogError("Không lấy được địa chỉ MAC");
-
+                functionSystem.showDialogError(getResources().getString(R.string.check_error_mac));
             }
         }else{
-            functionSystem.showDialogError("Kiểm tra lại kết nối mạng");
+            functionSystem.showDialogError(getResources().getString(R.string.check_error_network));
         }
     }
 
@@ -145,8 +146,10 @@ public class CheckActivity extends AppCompatActivity {
             outputStreamWriter.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            functionSystem.showDialogError(getResources().getString(R.string.check_error_wrileFile));
         } catch (IOException e) {
             e.printStackTrace();
+            functionSystem.showDialogError(getResources().getString(R.string.check_error_wrileFile));
         }
     }
 

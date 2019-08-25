@@ -1,7 +1,9 @@
 package com.example.vcar.fragment;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.LayoutTransition;
+import android.animation.ValueAnimator;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,6 +13,9 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
@@ -22,6 +27,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,31 +35,34 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.Adapter.SupplierCarAdapter;
-import com.example.entity.ItemHomeCar;
 import com.example.entity.ItemHomeSupplierCar;
 import com.example.entity.Message;
 import com.example.entity.Point;
 import com.example.vcar.FunctionSystem;
 import com.example.vcar.R;
+import com.hanks.htextview.base.DefaultAnimatorListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class fragmentHome extends Fragment implements View.OnContextClickListener{
     View view;
+    ConstraintLayout conLay_find;
     Button btn_removeStart, btn_removeEnd;
     ImageView img_start, img_end, img_move;
+    TextView txt_where;
     RecyclerView recyclerView;
     AutoCompleteTextView auto_start;
     AutoCompleteTextView auto_end;
     SwipeRefreshLayout srl_data;
 
     FunctionSystem functionSystem;
+
+    boolean statusShowConLayoutFind = true;
     static int y;
 
     @Override
@@ -67,18 +76,21 @@ public class fragmentHome extends Fragment implements View.OnContextClickListene
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         this.view = inflater.inflate(R.layout.fragment_home , container,false);
-        functionSystem = new FunctionSystem(view.getContext());
         addControls();
-        addEvents();
         setValues();
+        addEvents();
         return view;
     }
 
     private void setValues() {
+        functionSystem = new FunctionSystem(view.getContext());
+        conLay_find.setLayoutTransition(new LayoutTransition());
         new getPointAPI().execute();
     }
 
     private void addControls() {
+        conLay_find = view.findViewById(R.id.conlay_home_find);
+        txt_where = view.findViewById(R.id.txt_home_where);
         recyclerView = view.findViewById(R.id.recy_home_data);
         auto_start = view.findViewById(R.id.auto_home_start);
         auto_end = view.findViewById(R.id.auto_home_end);
@@ -91,6 +103,20 @@ public class fragmentHome extends Fragment implements View.OnContextClickListene
     }
 
     private void addEvents() {
+        txt_where.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(statusShowConLayoutFind){
+                    auto_start.setFocusable(true);
+                    auto_start.requestFocus();
+                    functionSystem.showKeyboardFrom(auto_start);
+                }else{
+                    slideDown();
+                    statusShowConLayoutFind = true;
+                }
+            }
+        });
+
         auto_end.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -140,19 +166,19 @@ public class fragmentHome extends Fragment implements View.OnContextClickListene
                 if (newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
                     Log.w("TAG", "bay");
                     if(y<=0){
-                        Log.w("TAG", "up");
-
+                        if(!statusShowConLayoutFind){
+                            slideDown();
+                            statusShowConLayoutFind = true;
+                        }
                     }
                     else{
-                        y=0;
-                        Log.w("TAG", "down");
-
+                        y = 0;
+                        if(statusShowConLayoutFind){
+                            slideUp();
+                            statusShowConLayoutFind = false;
+                        }
                     }
-
                 }
-
-
-
             }
 
             @Override
@@ -217,6 +243,30 @@ public class fragmentHome extends Fragment implements View.OnContextClickListene
             }
         });
     }
+
+    public void slideUp(){
+        conLay_find.animate()
+            .setDuration(0).alpha(0f)
+            .setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    conLay_find.setVisibility(View.GONE);
+                }
+            });
+    }
+
+    public void slideDown(){
+        conLay_find.animate()
+            .setDuration(500).alpha(1f)
+            .setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    conLay_find.setVisibility(View.VISIBLE);
+                }
+            });
+    }
+
 
     private void movePoint(){
         String start = auto_start.getText().toString();

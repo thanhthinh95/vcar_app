@@ -74,18 +74,26 @@ public class FunctionSystem {
     }
 
 
-    public void showDialogMessage(String dataJsonFromService){
-         Message message = new Message(dataJsonFromService);
-         if(message.getCode() == 200){
-             showDialogSuccess(message.getMessage());
-         }else if(message.getCode() == 500){
-             showDialogError(message.getMessage());
-         }
+    public boolean pingToServer(){
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 " + context.getResources().getString(R.string.ipServer));
+            int exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+        } catch (IOException e) { e.printStackTrace(); }
+        catch (InterruptedException e) { e.printStackTrace(); }
+        return false;
     }
+
 
     public void hideKeyboardFrom(View view) {
         InputMethodManager imm = (InputMethodManager) this.context.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+    }
+
+    public void showKeyboardFrom(View view){
+        InputMethodManager imm = (InputMethodManager) this.context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
     }
 
     public void showDialogSuccess(final String value){
@@ -120,7 +128,7 @@ public class FunctionSystem {
 
         alertDialog.show();
 
-        ((TextView) view.findViewById(R.id.txt_dialog_error)).setText(value);
+        ((TextView) view.findViewById(R.id.txt_dialog_error)).setText(value != null ? value: context.getString(R.string.check_error_server));
         view.findViewById(R.id.btn_dialog_error).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
@@ -170,6 +178,8 @@ public class FunctionSystem {
             urlConnection.disconnect();
         } catch (IOException e) {
             e.printStackTrace();
+            showDialogError(context.getResources().getString(R.string.check_error_server));
+            return null;
         }
         return buffer.toString();
     }
