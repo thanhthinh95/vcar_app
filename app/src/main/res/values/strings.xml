@@ -69,6 +69,7 @@
     <string name="dialog_ok">OK</string>
     <string name="dialog_got_it">Đã hiểu</string>
     <string name="dialog_back">Trở lại</string>
+    <string name="dialog_next">Tiếp Tục</string>
 
     <!--Login-->
     <string name="title_activity_login">LoginActivity</string>
@@ -113,4 +114,15 @@
     <string name="check_error_server">Kết nối server thất bại</string>
     <string name="check_error_readFile">Đọc tệp tin hệ thống thất bại</string>
     <string name="check_error_wrileFile" >Ghi tệp tin hệ thống thất bại</string>
+
+<!--    InfoCarDiaLog-->
+    <string name="dialog_info_car_error_show">Chưa đủ thông tin hiển thị</string>
+    <string name="info_car_title">Thông Tin Xe</string>
+    <string name="info_car_pointStop">Điểm dừng</string>
+    <string name="info_car_fare">Giá vé</string>
+    <string name="info_car_route">Tuyến đường</string>
+    <string name="info_car_type">Loại xe</string>
+    <string name="info_car_controlSea">Biển kiểm soát</string>
+    <string name="info_car_numberSeat">Số ghế</string>
+
 </resources>

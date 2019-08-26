@@ -2,12 +2,8 @@ package com.example.vcar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
-import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
@@ -21,7 +17,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.URL;
 
 public class CheckActivity extends AppCompatActivity {
     final FunctionSystem functionSystem = new FunctionSystem(this);

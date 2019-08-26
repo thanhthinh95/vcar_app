@@ -172,7 +172,7 @@ public class fragmentHome extends Fragment implements View.OnContextClickListene
                         }
                     }
                     else{
-                        y = 0;
+//                        y = 0; Khi keo den cuoi lan thu 2 thi bat o tim kiem len
                         if(statusShowConLayoutFind){
                             slideUp();
                             statusShowConLayoutFind = false;
@@ -235,7 +235,6 @@ public class fragmentHome extends Fragment implements View.OnContextClickListene
                 auto_start.setText("");
             }
         });
-
         btn_removeEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
