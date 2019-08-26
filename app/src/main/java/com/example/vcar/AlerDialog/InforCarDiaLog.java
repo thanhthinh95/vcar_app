@@ -3,21 +3,19 @@ package com.example.vcar.AlerDialog;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.Adapter.PointStopAdapter;
-import com.example.Adapter.SupplierCarAdapter;
 import com.example.entity.Car;
 import com.example.vcar.FunctionSystem;
 import com.example.vcar.R;
@@ -69,15 +67,15 @@ public class InforCarDiaLog {
     private void addControls(View view) {
         recy_pointStop = view.findViewById(R.id.recy_info_car_pointStop);
         txt_controlSea = view.findViewById(R.id.txt_info_car_controSea);
-        txt_type = view.findViewById(R.id.txt_info_car_type);
-        txt_fare = view.findViewById(R.id.txt_info_car_fare);
+        txt_type = view.findViewById(R.id.txt_book_ticket_type);
+        txt_fare = view.findViewById(R.id.txt_book_ticket_fare);
         txt_pointStop = view.findViewById(R.id.txt_info_car_pointStop);
-        txt_route = view.findViewById(R.id.txt_info_car_route);
+        txt_route = view.findViewById(R.id.txt_book_ticket_route);
         img_image = view.findViewById(R.id.img_info_car_image);
         imgbtn_prev = view.findViewById(R.id.imgbtn_info_car_prev);
         imgbtn_next = view.findViewById(R.id.imgbtn_info_car_next);
-        btn_back = view.findViewById(R.id.btn_info_car_back);
-        btn_next = view.findViewById(R.id.btn_infor_car_next);
+        btn_back = view.findViewById(R.id.btn_book_ticket_back);
+        btn_next = view.findViewById(R.id.btn_book_ticket_next);
         imgbtn_trans = view.findViewById(R.id.imgbtn_info_car_trans);
     }
 
@@ -137,7 +135,7 @@ public class InforCarDiaLog {
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Dang chuyen sang chon vi tri", Toast.LENGTH_SHORT).show();
+                new BookTicketDiaLog(context, car, direction).show();
             }
         });
     }

@@ -6,8 +6,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-
 public class Car {
     private String id;
     private String nameSupplier;
@@ -17,6 +15,7 @@ public class Car {
     private String[] imageUrl;
     private String type;
     private int numberSeat;
+    private JSONObject[] seatDiagram;
     private long fare;
     private String[] pointStop;
 
@@ -24,7 +23,7 @@ public class Car {
     public Car() {
     }
 
-    public Car(String id, String nameSupplier, String controlSea, String startPoint, String endPoint, String[] imageUrl, String type, int numberSeat, long fare, String[] pointStop) {
+    public Car(String id, String nameSupplier, String controlSea, String startPoint, String endPoint, String[] imageUrl, String type, int numberSeat, JSONObject[] seatDiagram, long fare, String[] pointStop) {
         this.id = id;
         this.nameSupplier = nameSupplier;
         this.startPoint = startPoint;
@@ -33,6 +32,7 @@ public class Car {
         this.imageUrl = imageUrl;
         this.type = type;
         this.numberSeat = numberSeat;
+        this.seatDiagram = seatDiagram;
         this.fare = fare;
         this.pointStop = pointStop;
     }
@@ -60,6 +60,11 @@ public class Car {
             }
 
 
+            jsonArray = jsonObject.getJSONArray("seatDiagram");
+            seatDiagram = new JSONObject[jsonArray.length()];
+            for(int i = 0 ; i < jsonArray.length(); i++){
+                this.seatDiagram[i] = jsonArray.getJSONObject(i);
+            }
 
             this.fare = jsonObject.getLong("fare");
             this.numberSeat = jsonObject.getInt("numberSeat");
@@ -120,6 +125,14 @@ public class Car {
 
     public int getNumberSeat() {
         return numberSeat;
+    }
+
+    public JSONObject[] getSeatDiagram() {
+        return seatDiagram;
+    }
+
+    public void setSeatDiagram(JSONObject[] seatDiagram) {
+        this.seatDiagram = seatDiagram;
     }
 
     public void setNumberSeat(int numberSeat) {

@@ -54,13 +54,13 @@
 
 
     <!--server-->
-<!--    <string name="ipServer">108.160.129.143</string>-->
-<!--    <string name="host">http://108.160.129.143:4000/</string>-->
-<!--    <string name="host_api">http://108.160.129.143:4000/api/</string>-->
+    <string name="ipServer">108.160.129.143</string>
+    <string name="host">http://108.160.129.143:4000/</string>
+    <string name="host_api">http://108.160.129.143:4000/api/</string>
 
-    <string name="ipServer">192.168.1.3</string>
-    <string name="host">http://192.168.1.3:4000/</string>
-    <string name="host_api">http://192.168.1.3:4000/api/</string>
+<!--    <string name="ipServer">192.168.1.3</string>-->
+<!--    <string name="host">http://192.168.1.3:4000/</string>-->
+<!--    <string name="host_api">http://192.168.1.3:4000/api/</string>-->
 
     <string name="token_api">ABC</string>
     <integer name="timeout_server">10000</integer>
@@ -116,13 +116,23 @@
     <string name="check_error_wrileFile" >Ghi tệp tin hệ thống thất bại</string>
 
 <!--    InfoCarDiaLog-->
-    <string name="dialog_info_car_error_show">Chưa đủ thông tin hiển thị</string>
     <string name="info_car_title">Thông Tin Xe</string>
+    <string name="dialog_info_car_error_show">Chưa đủ thông tin hiển thị</string>
     <string name="info_car_pointStop">Điểm dừng</string>
     <string name="info_car_fare">Giá vé</string>
     <string name="info_car_route">Tuyến đường</string>
     <string name="info_car_type">Loại xe</string>
     <string name="info_car_controlSea">Biển kiểm soát</string>
     <string name="info_car_numberSeat">Số ghế</string>
+
+    <!--    BookTicketDialog-->
+    <string name="book_ticket_title">Đặt Vé Xe</string>
+    <string name="book_ticket_date">Ngày khởi hành</string>
+    <string name="book_ticket_hours">Giờ xuất phát</string>
+    <string name="book_ticket_sum">Số lượng vé</string>
+<!--    <string name="info_car_route">Tuyến đường</string>-->
+<!--    <string name="info_car_type">Loại xe</string>-->
+<!--    <string name="info_car_controlSea">Biển kiểm soát</string>-->
+<!--    <string name="info_car_numberSeat">Số ghế</string>-->
 
 </resources>

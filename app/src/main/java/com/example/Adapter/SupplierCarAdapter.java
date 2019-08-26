@@ -69,7 +69,7 @@ public class SupplierCarAdapter extends RecyclerView.Adapter<SupplierCarAdapter.
         }
 
         private void showInfoCarSupplier(int position){
-            functionSystem.showDialogSuccess("Thong tin nha xe: " + listData.get(position).getName());
+//            functionSystem.showDialogSuccess("Thong tin nha xe: " + listData.get(position).getName());
         }
 
     }

@@ -90,7 +90,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout5"
+        android:id="@+id/conlay_book_ticket_info_car"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -126,7 +126,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="5dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_info_car_route"
+            app:layout_constraintTop_toBottomOf="@+id/txt_book_ticket_route"
             app:srcCompat="@drawable/ic_airline_seat_legroom_extra_black_24dp" />
 
         <ImageView
@@ -136,11 +136,11 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="5dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_info_car_type"
+            app:layout_constraintTop_toBottomOf="@+id/txt_book_ticket_type"
             app:srcCompat="@drawable/ic_attach_money_black_24dp" />
 
         <TextView
-            android:id="@+id/txt_info_car_route"
+            android:id="@+id/txt_book_ticket_route"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -154,7 +154,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txt_info_car_type"
+            android:id="@+id/txt_book_ticket_type"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -165,10 +165,10 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView11"
-            app:layout_constraintTop_toBottomOf="@+id/txt_info_car_route" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_book_ticket_route" />
 
         <TextView
-            android:id="@+id/txt_info_car_fare"
+            android:id="@+id/txt_book_ticket_fare"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -179,7 +179,7 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView12"
-            app:layout_constraintTop_toBottomOf="@+id/txt_info_car_type" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_book_ticket_type" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -191,7 +191,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout5">
+        app:layout_constraintTop_toBottomOf="@+id/conlay_book_ticket_info_car">
 
         <ImageView
             android:id="@+id/imageView13"
@@ -237,7 +237,7 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
 
         <Button
-            android:id="@+id/btn_infor_car_next"
+            android:id="@+id/btn_book_ticket_next"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -251,7 +251,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/btn_info_car_back"
+            android:id="@+id/btn_book_ticket_back"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
