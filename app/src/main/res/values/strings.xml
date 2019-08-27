@@ -129,10 +129,11 @@
     <string name="book_ticket_title">Đặt Vé Xe</string>
     <string name="book_ticket_date">Ngày khởi hành</string>
     <string name="book_ticket_hours">Giờ xuất phát</string>
-    <string name="book_ticket_sum">Số lượng vé</string>
-<!--    <string name="info_car_route">Tuyến đường</string>-->
-<!--    <string name="info_car_type">Loại xe</string>-->
-<!--    <string name="info_car_controlSea">Biển kiểm soát</string>-->
-<!--    <string name="info_car_numberSeat">Số ghế</string>-->
+    <string name="book_ticket_sum_money">Tổng tiền</string>
+    <string name="book_ticket_seat_diagram">Sơ đồ chỗ ngồi</string>
+    <string name="book_ticket_seat_emply">Còn trống</string>
+    <string name="book_ticket_seat_selected">Đã chọn</string>
+    <string name="book_ticket_seat_selecting">Đang chọn</string>
+
 
 </resources>
