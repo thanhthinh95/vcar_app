@@ -53,7 +53,7 @@
     <string name="message_password_repeat_invalid">Xác nhận mật khẩu không khớp</string>
 
 
-    <!--server-->
+<!--    server-->
     <string name="ipServer">108.160.129.143</string>
     <string name="host">http://108.160.129.143:4000/</string>
     <string name="host_api">http://108.160.129.143:4000/api/</string>
@@ -130,10 +130,12 @@
     <string name="book_ticket_date">Ngày khởi hành</string>
     <string name="book_ticket_hours">Giờ xuất phát</string>
     <string name="book_ticket_sum_money">Tổng tiền</string>
-    <string name="book_ticket_seat_diagram">Sơ đồ chỗ ngồi</string>
+    <string name="book_ticket_seat_diagram">Sơ đồ</string>
     <string name="book_ticket_seat_emply">Còn trống</string>
     <string name="book_ticket_seat_selected">Đã chọn</string>
     <string name="book_ticket_seat_selecting">Đang chọn</string>
+    <string name="dialog_book_ticket_error_trip">Không có thông tin hiển thị chuyến đi. Thử lại sau</string>
+
 
 
 </resources>

@@ -10,7 +10,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -76,7 +75,7 @@ public class InforCarDiaLog {
         imgbtn_next = view.findViewById(R.id.imgbtn_info_car_next);
         btn_back = view.findViewById(R.id.btn_book_ticket_back);
         btn_next = view.findViewById(R.id.btn_book_ticket_next);
-        imgbtn_trans = view.findViewById(R.id.imgbtn_info_car_trans);
+        imgbtn_trans = view.findViewById(R.id.imgbtn_book_ticket_trans);
     }
 
     private void setValues() {
@@ -135,6 +134,7 @@ public class InforCarDiaLog {
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                alertDialog.dismiss();
                 new BookTicketDiaLog(context, car, direction).show();
             }
         });
@@ -159,7 +159,6 @@ public class InforCarDiaLog {
             }
             pointStop[car.getPointStop().length + 1] = car.getStartPoint();
         }
-
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
         recy_pointStop.setLayoutManager(mLayoutManager);

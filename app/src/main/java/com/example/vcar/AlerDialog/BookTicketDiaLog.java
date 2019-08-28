@@ -2,14 +2,18 @@ package com.example.vcar.AlerDialog;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Context;
-import android.graphics.Color;
+import android.os.AsyncTask;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -18,33 +22,45 @@ import android.widget.Toast;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.entity.Car;
+import com.example.entity.Message;
+import com.example.entity.Trip;
 import com.example.vcar.FunctionSystem;
 import com.example.vcar.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class BookTicketDiaLog {
     private Car car;
     private Context context;
 
-    FunctionSystem functionSystem;
-    TextView txt_controlSea, txt_route, txt_type, txt_fare, txt_seat_diagram, txt_seat_empty, txt_seat_selected, txt_seat_selecting, txt_sum_money;
-    ImageButton imgbtn_collapse_extend, imgbtn_trans, imgbtn_nextFloor, imgbtn_prevFloor;
-    ConstraintLayout conlay_info_ticket, conlay_info_car, conlay_seat_diagram;
-    TableLayout tbl_diagram;
-    Button btn_back, btn_next;
+    private FunctionSystem functionSystem;
+    private TextView txt_controlSea, txt_route, txt_type, txt_fare, txt_seat_diagram, txt_seat_empty, txt_seat_selected, txt_seat_selecting, txt_sum_money, txt_date_start;
+    private ImageButton imgbtn_collapse_extend, imgbtn_trans, imgbtn_nextFloor, imgbtn_prevFloor, imtbtn_update_date_start;
+    private ConstraintLayout conlay_info_ticket, conlay_info_car, conlay_seat_diagram;
+    private Spinner sp_hours;
+    private TableLayout tbl_diagram;
+    private Button btn_back, btn_next;
 
+    private int currendFloor = 0;
+    private int sumSeatEmpty = 0;
+    private int sumSeatSelected = 0;
+    private int sumSeatSelecting = 0;
+    private boolean direction = true; //Phuong huong di chuyen, true: xuoi; false : ngược
+    private boolean statusCollapse = true;//Trang thai dong mo menu, true: dong, false: mo
 
-    int currendFloor = 0;
-    int sumSeatEmpty = 0;
-    int sumSeatSelected = 0;
-    int sumSeatSelecting = 0;
-    boolean direction = true; //Phuong huong di chuyen, true: xuoi; false : ngược
-    boolean statusCollapse = true;//Trang thai dong mo menu, true: dong, false: mo
+    private JSONObject seatSelecting = new JSONObject();
+    private AlertDialog alertDialog;
+    private List<Trip> trips = null;
+    private Date dateStart = new Date();
 
-    JSONObject seatSelecting = new JSONObject();
-    AlertDialog alertDialog;
 
     public BookTicketDiaLog(Context context, Car car, boolean direction) {
         this.context = context;
@@ -58,15 +74,18 @@ public class BookTicketDiaLog {
             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
             final LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             final View view = inflater.inflate(R.layout.layout_home_book_ticket, null);
-            addControls(view);
-            setValues();
-            addEvents();
-            builder.setView(view);
 
+            builder.setView(view);
             alertDialog = builder.create();
             alertDialog.setCanceledOnTouchOutside(false);
             alertDialog.setCancelable(false);
             alertDialog.show();
+
+
+
+            addControls(view);
+            setValues();
+            addEvents();
         }else{
             functionSystem.showDialogError(context.getResources().getString(R.string.dialog_info_car_error_show));
         }
@@ -85,7 +104,7 @@ public class BookTicketDiaLog {
         txt_route = view.findViewById(R.id.txt_book_ticket_route);
         btn_back = view.findViewById(R.id.btn_book_ticket_back);
         btn_next = view.findViewById(R.id.btn_book_ticket_next);
-        imgbtn_trans = view.findViewById(R.id.imgbtn_info_car_trans);
+        imgbtn_trans = view.findViewById(R.id.imgbtn_book_ticket_trans);
         tbl_diagram = view.findViewById(R.id.tbl_book_ticket_diagram);
         imgbtn_nextFloor = view.findViewById(R.id.imgbtn_book_ticket_nextfloor);
         imgbtn_prevFloor = view.findViewById(R.id.imgbtn_book_ticket_prevfloor);
@@ -94,6 +113,9 @@ public class BookTicketDiaLog {
         txt_seat_selected = view.findViewById(R.id.txt_book_ticket_seat_selected);
         txt_seat_selecting = view.findViewById(R.id.txt_book_ticket_seat_selecting);
         txt_sum_money = view.findViewById(R.id.txt_book_ticket_sum_money);
+        sp_hours = view.findViewById(R.id.sp_book_ticket_hours);
+        txt_date_start = view.findViewById(R.id.txt_book_ticket_date_start);
+        imtbtn_update_date_start = view.findViewById(R.id.imgbtn_book_ticket_update_date_start);
     }
 
     private void setValues() {
@@ -101,10 +123,23 @@ public class BookTicketDiaLog {
             txt_controlSea.setText(car.getNameSupplier() + " - " + car.getControlSea());
             txt_type.setText(context.getResources().getString(R.string.info_car_type) + ": " + car.getType() + " (" + car.getNumberSeat() + " chỗ)");
             txt_fare.setText(context.getResources().getString(R.string.info_car_fare) + ": "+ car.getFare());
+
+
             showDirection();
+            showDateStart();
 
             sumSeatEmpty = car.getNumberSeat();
             showValueNumberSeat();
+
+            try {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("carId", car.getId());
+                jsonObject.put("action", "getCarId");
+                new getTripAPI().execute(jsonObject.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
 
             if(car.getSeatDiagram().length > 0){//Hien thi so do cho ngoi tang 1
                 currendFloor = 0;
@@ -140,17 +175,33 @@ public class BookTicketDiaLog {
             }
         });
 
+        imtbtn_update_date_start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeDateStart();
+            }
+        });
+
+        txt_date_start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeDateStart();
+            }
+        });
+
         imgbtn_trans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 direction = !direction;
                 showDirection();
+                showTrips();
             }
         });
 
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                new InforCarDiaLog(context, car).show();
                 alertDialog.dismiss();
             }
         });
@@ -190,6 +241,42 @@ public class BookTicketDiaLog {
         });
     }
 
+    private void changeDateStart() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dateStart);
+        int mYear =  calendar.get(Calendar.YEAR);
+        int mMonth = calendar.get(Calendar.MONTH);
+        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(context,
+                R.style.DialogDateTimePickerTheme,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
+                        try {
+                            String dateOnlyValue = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+                            dateStart = functionSystem.dateOnlyFormat.parse(dateOnlyValue);
+                            showDateStart();
+                            showTrips();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }, mYear, mMonth, mDay);
+
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+        datePickerDialog.show();
+    }
+
+    private void showDateStart() {
+        if(dateStart != null){
+            txt_date_start.setText(context.getResources().getString(R.string.book_ticket_date) + ": " + functionSystem.dateOnlyFormat.format(dateStart));
+        }
+
+    }
+
     private void showDirection() {
         if(direction){//Chieu xuoi
             txt_route.setText(car.getStartPoint() + " - " + car.getEndPoint());
@@ -200,7 +287,6 @@ public class BookTicketDiaLog {
 
 
     private void showSeatDiagram(int numberFloor){
-        Toast.makeText(context, numberFloor + "", Toast.LENGTH_SHORT).show();
         try {
             if(car.getSeatDiagram().length == 1){
                 txt_seat_diagram.setText(context.getResources().getString(R.string.book_ticket_seat_diagram));
@@ -350,4 +436,84 @@ public class BookTicketDiaLog {
         }
     }
 
+
+    private class getTripAPI extends AsyncTask<String, String, String> {
+        protected void onPreExecute() {
+            super.onPreExecute();
+            functionSystem.showLoading();
+        }
+
+        protected String doInBackground(String... params) {
+            return functionSystem.postMethod(context.getResources().getString(R.string.host_api).toString() + "trip", params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            functionSystem.hideLoading();
+            Message message = new Message(result);
+            if(message.getCode() == 200){
+                try {
+                    JSONArray jsonArray = new JSONArray(message.getData());
+                    trips = new ArrayList<Trip>();
+                    for (int i = 0; i < jsonArray.length(); i++){
+                        trips.add(new Trip(jsonArray.get(i).toString()));
+                    }
+                    showTrips();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                functionSystem.showDialogError(message.getMessage());
+            }
+        }
+    }
+
+    private void showTrips() {
+        if(trips != null && trips.size() > 0){
+            List<String> listValue = new ArrayList<String>();
+            int typeMach = 0;//Chieu nguoc
+            if(direction){//chieu xuoi
+                typeMach = 1;
+            }
+
+            sp_hours.setAdapter(null);
+            Date dateNow = new Date();
+            if(functionSystem.dateOnlyFormat.format(dateStart).equals(functionSystem.dateOnlyFormat.format(dateNow))){//Ngay khoi hanh la ngay hom nay
+                String dateTimeValue;
+
+                for(int i = 0; i < trips.size(); i++){
+                    try {
+                        if(trips.get(i).getType() == typeMach){
+                            dateTimeValue = functionSystem.dateOnlyFormat.format(dateStart) + " " + trips.get(i).getTimeStartString();
+                            if(dateNow.getTime() < functionSystem.dateTimeFormat.parse(dateTimeValue).getTime()) {//Hien thi nhung chuyen di trong tuong lai
+                                listValue.add(trips.get(i).getTimeStartString());
+                            }
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }else{//Ngay khoi hanh khong phai la hom nay
+                for(int i = 0; i < trips.size(); i++){
+                    if(trips.get(i).getType() == typeMach){//Hien thi tat ca cac chuyen di theo chieu xuoi / nguoc
+                        listValue.add(trips.get(i).getTimeStartString());
+                    }
+                }
+            }
+
+
+            if(listValue.size() == 0){
+                String mesage = txt_route.getText().toString() + " " + functionSystem.dateOnlyFormat.format(dateStart) + " đã hết chuyến xe phục vụ. Hãy chọn ngày khác!";
+                functionSystem.showDialogError(mesage);
+
+            }else{
+                ArrayAdapter adapter = new ArrayAdapter(context, android.R.layout.simple_spinner_item, listValue);
+                adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+                sp_hours.setAdapter(adapter);
+            }
+        }else {
+            functionSystem.showDialogError(context.getResources().getString(R.string.dialog_book_ticket_error_trip));
+        }
+    }
 }

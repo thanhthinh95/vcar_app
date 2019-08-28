@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
@@ -24,6 +25,8 @@ import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.NetworkInterface;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,6 +37,10 @@ public class FunctionSystem {
     public FunctionSystem(final Context context){
         this.context = context;
     }
+
+    public DateFormat dateOnlyFormat = new SimpleDateFormat("dd/MM/yyyy");
+    public DateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
 
     public String getAddress(){
         try {
@@ -119,7 +126,6 @@ public class FunctionSystem {
         final AlertDialog alertDialog = builder.create();
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.setCancelable(false);
-
         alertDialog.show();
 
         ((TextView) view.findViewById(R.id.txt_dialog_error)).setText(value != null ? value: context.getString(R.string.check_error_server));

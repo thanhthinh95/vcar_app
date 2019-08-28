@@ -109,7 +109,7 @@
             app:srcCompat="@drawable/ic_merge_type_black_24dp" />
 
         <ImageButton
-            android:id="@+id/imgbtn_info_car_trans"
+            android:id="@+id/imgbtn_book_ticket_trans"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginTop="5dp"
@@ -149,7 +149,7 @@
             android:text="@string/info_car_route"
             android:textColor="@android:color/black"
             android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@+id/imgbtn_info_car_trans"
+            app:layout_constraintEnd_toStartOf="@+id/imgbtn_book_ticket_trans"
             app:layout_constraintStart_toEndOf="@+id/imageView7"
             app:layout_constraintTop_toTopOf="parent" />
 

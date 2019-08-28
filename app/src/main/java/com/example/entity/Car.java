@@ -40,6 +40,7 @@ public class Car {
     public Car(String data) {
         try {
             JSONObject jsonObject = new JSONObject(data);
+            this.id = jsonObject.getString("_id");
             this.nameSupplier = jsonObject.getString("nameSupplier");
             this.controlSea = jsonObject.getString("controlSea");
             this.type = jsonObject.getString("type");

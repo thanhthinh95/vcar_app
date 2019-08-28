@@ -25,4 +25,8 @@
         <item name="android:background">@color/black_overlay</item>
     </style>
 
+<!--    Customize theme datetime picker dialog-->
+    <style name="DialogDateTimePickerTheme" parent="android:Theme.Material.Light.Dialog">
+    </style>
+
 </resources>

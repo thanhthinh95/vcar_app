@@ -43,7 +43,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView10">
 
         <ImageButton
-            android:id="@+id/imgbtn_info_car_trans"
+            android:id="@+id/imgbtn_book_ticket_trans"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginTop="5dp"
@@ -103,7 +103,7 @@
             android:text="@string/info_car_route"
             android:textColor="@android:color/black"
             android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@+id/imgbtn_info_car_trans"
+            app:layout_constraintEnd_toStartOf="@+id/imgbtn_book_ticket_trans"
             app:layout_constraintStart_toEndOf="@+id/imageView7"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -156,10 +156,30 @@
         android:id="@+id/conlay_book_ticket_info_ticket"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/conlay_book_ticket_info_car">
+
+        <ImageButton
+            android:id="@+id/imgbtn_book_ticket_update_date_start"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/background_none"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_update_black_24dp" />
+
+        <ImageView
+            android:id="@+id/imageView15"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_book_ticket_date_start"
+            app:srcCompat="@drawable/ic_timer_black_24dp" />
 
         <ImageView
             android:id="@+id/imageView6"
@@ -171,86 +191,51 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_date_range_black_24dp" />
 
-        <ImageView
-            android:id="@+id/imageView15"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_book_ticket_fare2"
-            app:srcCompat="@drawable/ic_timer_black_24dp" />
-
-        <ImageView
-            android:id="@+id/imageView16"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView15"
-            app:srcCompat="@drawable/ic_attach_money_black_24dp" />
-
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/sp_book_ticket_hours"
             android:layout_width="215dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:layout_marginEnd="10dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="7dp"
             android:scrollbarSize="4dp"
             android:spinnerMode="dialog"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_book_ticket_fare2" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_book_ticket_date_start" />
+
+        <TextView
+            android:id="@+id/txt_book_ticket_date_start"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:text="@string/book_ticket_date"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@+id/imgbtn_book_ticket_update_date_start"
+            app:layout_constraintStart_toEndOf="@+id/imageView6"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/txt_book_ticket_fare3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="5dp"
             android:text="@string/book_ticket_hours"
             android:textColor="@android:color/black"
             android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@+id/spinner"
+            app:layout_constraintEnd_toStartOf="@+id/sp_book_ticket_hours"
             app:layout_constraintStart_toEndOf="@+id/imageView6"
-            app:layout_constraintTop_toBottomOf="@+id/txt_book_ticket_fare2" />
-
-        <TextView
-            android:id="@+id/txt_book_ticket_sum_money"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:text="@string/book_ticket_sum_money"
-            android:textColor="@android:color/black"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/imageView6"
-            app:layout_constraintTop_toBottomOf="@+id/txt_book_ticket_fare3" />
-
-        <TextView
-            android:id="@+id/txt_book_ticket_fare2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:text="@string/book_ticket_date"
-            android:textColor="@android:color/black"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView6"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_book_ticket_date_start" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/conlay_book_ticket_seatdiagram"
         android:layout_width="0dp"
         android:layout_height="230dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/conlay_book_ticket_info_ticket">
@@ -290,11 +275,43 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_map_black_24dp" />
 
+        <ImageView
+            android:id="@+id/imageView14"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/background_seat_emply" />
+
+
+        <ImageView
+            android:id="@+id/imageView17"
+            android:layout_width="20dp"
+            android:layout_height="19dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txt_book_ticket_seat_empty"
+            app:srcCompat="@drawable/background_seat_selected" />
+
+        <ImageView
+            android:id="@+id/imageView19"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txt_book_ticket_seat_selected"
+            app:srcCompat="@drawable/background_seat_selecting" />
+
         <ScrollView
             android:id="@+id/scrollView2"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:fadingEdge="horizontal|vertical"
             android:fillViewport="true"
@@ -322,7 +339,6 @@
 
         </ScrollView>
 
-
         <TextView
             android:id="@+id/txt_book_ticket_seat_diagram"
             android:layout_width="0dp"
@@ -332,7 +348,7 @@
             android:layout_marginEnd="10dp"
             android:text="@string/book_ticket_seat_diagram"
             android:textColor="@android:color/black"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/txt_book_ticket_sum_money"
             app:layout_constraintStart_toEndOf="@+id/imageView18"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -369,35 +385,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView19" />
 
-        <ImageView
-            android:id="@+id/imageView14"
-            android:layout_width="19dp"
-            android:layout_height="19dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginBottom="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/background_seat_emply" />
-
-        <ImageView
-            android:id="@+id/imageView17"
-            android:layout_width="20dp"
-            android:layout_height="19dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginBottom="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/txt_book_ticket_seat_empty"
-            app:srcCompat="@drawable/background_seat_selected" />
-
-        <ImageView
-            android:id="@+id/imageView19"
-            android:layout_width="19dp"
-            android:layout_height="19dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginBottom="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/txt_book_ticket_seat_selected"
-            app:srcCompat="@drawable/background_seat_selecting" />
+        <TextView
+            android:id="@+id/txt_book_ticket_sum_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
+            android:text="@string/book_ticket_sum_money"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         >
     </androidx.constraintlayout.widget.ConstraintLayout>
