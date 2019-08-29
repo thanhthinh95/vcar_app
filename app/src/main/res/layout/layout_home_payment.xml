@@ -13,7 +13,7 @@
         android:layout_height="45dp"
         android:background="@color/colorPrimaryDark"
         android:paddingTop="8dp"
-        android:text="@string/info_car_title"
+        android:text="@string/payment_title"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="24sp"
@@ -23,80 +23,77 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout3"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:id="@+id/constraintLayout4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:minHeight="150dp"
+        android:maxHeight="400dp"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10">
 
-        <ImageButton
-            android:id="@+id/imgbtn_info_car_prev"
-            android:layout_width="60dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/background_none"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_navigate_before_black_24dp" />
-
-
-        <ImageButton
-            android:id="@+id/imgbtn_info_car_next"
-            android:layout_width="60dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/background_none"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <EditText
+            android:id="@+id/edit_payment_code"
+            android:layout_width="200dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/background_edittext_while_small"
+            android:ems="10"
+            android:hint="@string/payment_hint_code_promotion"
+            android:imeOptions="actionNone|actionGo"
+            android:inputType="textPersonName"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_navigate_next_black_24dp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/img_info_car_image"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            app:layout_constraintBottom_toTopOf="@+id/txt_info_car_controSea"
-            app:layout_constraintEnd_toStartOf="@+id/imgbtn_info_car_next"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/imgbtn_info_car_prev"
+            android:id="@+id/imageView13"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="3dp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_directions_bus_black_24dp"></ImageView>
+            app:srcCompat="@drawable/ic_code_black_24dp" />
 
         <TextView
-            android:id="@+id/txt_info_car_controSea"
+            android:id="@+id/textView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:text="@string/info_car_controlSea"
-            android:textAlignment="center"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/payment_code_promotion"
             android:textColor="@android:color/black"
-            android:textSize="16dp"
-            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/edit_payment_code"
+            app:layout_constraintStart_toEndOf="@+id/imageView13"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recy_payment_ticket"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imgbtn_info_car_next"
-            app:layout_constraintStart_toEndOf="@+id/imgbtn_info_car_prev" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_payment_code" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/conlay_book_ticket_info_car"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
 
         <ImageView
             android:id="@+id/imageView7"
@@ -106,18 +103,7 @@
             android:layout_marginTop="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_merge_type_black_24dp" />
-
-        <ImageButton
-            android:id="@+id/imgbtn_book_ticket_trans"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/background_none"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_swap_vert_black_24dp" />
+            app:srcCompat="@drawable/ic_attach_money_black_24dp" />
 
         <ImageView
             android:id="@+id/imageView11"
@@ -127,7 +113,7 @@
             android:layout_marginTop="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_book_ticket_route"
-            app:srcCompat="@drawable/ic_airline_seat_legroom_extra_black_24dp" />
+            app:srcCompat="@drawable/ic_money_off_black_24dp" />
 
         <ImageView
             android:id="@+id/imageView12"
@@ -145,12 +131,24 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:text="@string/info_car_route"
+            android:layout_marginEnd="10dp"
+            android:text="@string/payment_money"
             android:textColor="@android:color/black"
             android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@+id/imgbtn_book_ticket_trans"
+            app:layout_constraintEnd_toStartOf="@+id/txt_payment_money"
             app:layout_constraintStart_toEndOf="@+id/imageView7"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txt_payment_money"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
+            android:text="@string/payment_money"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -160,11 +158,23 @@
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
-            android:text="@string/info_car_type"
+            android:text="@string/payment_discount"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@+id/txt_payment_discount"
+            app:layout_constraintStart_toEndOf="@+id/imageView11"
+            app:layout_constraintTop_toBottomOf="@+id/txt_book_ticket_route" />
+
+        <TextView
+            android:id="@+id/txt_payment_discount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
+            android:text="@string/payment_discount"
             android:textColor="@android:color/black"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView11"
             app:layout_constraintTop_toBottomOf="@+id/txt_book_ticket_route" />
 
         <TextView
@@ -173,68 +183,63 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:text="@string/info_car_fare"
+            android:layout_marginEnd="1dp"
+            android:text="@string/payment_totalMoney"
             android:textColor="@android:color/black"
             android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/txt_payment_total_money"
             app:layout_constraintStart_toEndOf="@+id/imageView12"
             app:layout_constraintTop_toBottomOf="@+id/txt_book_ticket_type" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout4"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/conlay_book_ticket_info_car">
-
-        <ImageView
-            android:id="@+id/imageView13"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="15dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_timeline_black_24dp" />
-
         <TextView
-            android:id="@+id/txt_info_car_pointStop"
+            android:id="@+id/txt_payment_total_money"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="10dp"
-            android:text="@string/info_car_pointStop"
-            android:textColor="@android:color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView13"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recy_payment_ticket"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="@string/payment_totalMoney"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_book_ticket_type" />
+
+        <RadioGroup
+            android:id="@+id/grad_payment_payment"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_info_car_pointStop" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_book_ticket_fare">
+
+            <RadioButton
+                android:id="@+id/rad_payment_case"
+                android:layout_width="180dp"
+                android:layout_height="match_parent"
+                android:text="@string/payment_case"
+                android:theme="@style/MyRaidoButton" />
+
+            <RadioButton
+                android:id="@+id/rad_payment_visa_card"
+                android:layout_width="180dp"
+                android:layout_height="match_parent"
+                android:text="@string/payment_visa_card"
+                android:theme="@style/MyRaidoButton" />
+        </RadioGroup>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout6"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
+        app:layout_constraintTop_toBottomOf="@+id/conlay_book_ticket_info_car">
 
         <Button
             android:id="@+id/btn_payment_next"
@@ -244,7 +249,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/background_button_success"
-            android:text="@string/dialog_next"
+            android:text="@string/dialog_complete"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

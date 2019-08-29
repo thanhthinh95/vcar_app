@@ -29,4 +29,11 @@
     <style name="DialogDateTimePickerTheme" parent="android:Theme.Material.Light.Dialog">
     </style>
 
+
+    <style name="MyRaidoButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="colorAccent">@android:color/black</item>
+        <item name="android:textColorPrimaryDisableOnly">@android:color/black</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat</item>
+    </style>
+
 </resources>

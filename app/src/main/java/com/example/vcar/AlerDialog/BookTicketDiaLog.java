@@ -17,7 +17,6 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -25,6 +24,7 @@ import com.example.entity.Car;
 import com.example.entity.Message;
 import com.example.entity.Trip;
 import com.example.vcar.FunctionSystem;
+import com.example.vcar.MainActivity;
 import com.example.vcar.R;
 
 import org.json.JSONArray;
@@ -61,7 +61,6 @@ public class BookTicketDiaLog {
     private List<Trip> trips = null;
     private Date dateStart = new Date();
 
-
     public BookTicketDiaLog(Context context, Car car, boolean direction) {
         this.context = context;
         this.car = car;
@@ -80,8 +79,6 @@ public class BookTicketDiaLog {
             alertDialog.setCanceledOnTouchOutside(false);
             alertDialog.setCancelable(false);
             alertDialog.show();
-
-
 
             addControls(view);
             setValues();
@@ -102,8 +99,8 @@ public class BookTicketDiaLog {
         txt_fare = view.findViewById(R.id.txt_book_ticket_fare);
         imgbtn_collapse_extend = view.findViewById(R.id.imgbtn_book_ticket_collapse_extend);
         txt_route = view.findViewById(R.id.txt_book_ticket_route);
-        btn_back = view.findViewById(R.id.btn_book_ticket_back);
-        btn_next = view.findViewById(R.id.btn_book_ticket_next);
+        btn_back = view.findViewById(R.id.btn_payment_back);
+        btn_next = view.findViewById(R.id.btn_payment_next);
         imgbtn_trans = view.findViewById(R.id.imgbtn_book_ticket_trans);
         tbl_diagram = view.findViewById(R.id.tbl_book_ticket_diagram);
         imgbtn_nextFloor = view.findViewById(R.id.imgbtn_book_ticket_nextfloor);
@@ -123,7 +120,6 @@ public class BookTicketDiaLog {
             txt_controlSea.setText(car.getNameSupplier() + " - " + car.getControlSea());
             txt_type.setText(context.getResources().getString(R.string.info_car_type) + ": " + car.getType() + " (" + car.getNumberSeat() + " chỗ)");
             txt_fare.setText(context.getResources().getString(R.string.info_car_fare) + ": "+ car.getFare());
-
 
             showDirection();
             showDateStart();
@@ -154,7 +150,6 @@ public class BookTicketDiaLog {
     }
 
     private void addEvents() {
-
         imgbtn_collapse_extend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -179,6 +174,7 @@ public class BookTicketDiaLog {
             @Override
             public void onClick(View view) {
                 changeDateStart();
+
             }
         });
 
@@ -209,7 +205,20 @@ public class BookTicketDiaLog {
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Dang chuyen sang thanh toan", Toast.LENGTH_SHORT).show();
+                if(validateInfoBooking()){
+                    try {
+                        JSONObject jsonObject = new JSONObject();
+                        jsonObject.put("action", "createNew");
+                        jsonObject.put("customerId", MainActivity.idCustomer);
+                        jsonObject.put("tripId", trips.get(sp_hours.getSelectedItemPosition()).getId());
+                        jsonObject.put("dateStart", functionSystem.dateOnlyFormat.format(dateStart));
+                        jsonObject.put("fare", car.getFare());
+                        jsonObject.put("positions", seatSelecting.toString());
+                        new creatNewTicketAPI().execute(jsonObject.toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
 
@@ -239,6 +248,20 @@ public class BookTicketDiaLog {
                 showSeatDiagram(currendFloor);
             }
         });
+    }
+
+    private boolean validateInfoBooking(){
+        boolean result = true;
+
+        if(sp_hours.getSelectedItemPosition() == -1){
+            functionSystem.showDialogError(context.getResources().getString(R.string.book_ticket_message_error_trip));
+            result = false;
+        }else if(sumSeatSelecting == 0){
+            functionSystem.showDialogError(context.getResources().getString(R.string.book_ticket_message_error_seat));
+            result = false;
+        }
+
+        return result;
     }
 
     private void changeDateStart() {
@@ -303,7 +326,6 @@ public class BookTicketDiaLog {
 
             tbl_diagram.removeAllViews();
 
-
             for (int row = 0; row < numRow; row++) {
                 TableRow tableRow= new TableRow(context);
                 TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
@@ -313,7 +335,6 @@ public class BookTicketDiaLog {
                     final Button btn_seat = new Button(context);
                     int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 45, context.getResources().getDisplayMetrics());
                     int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 45, context.getResources().getDisplayMetrics());
-
 
                     btn_seat.setLayoutParams(new TableRow.LayoutParams(width,height));
                     btn_seat.setTextSize(10);
@@ -460,6 +481,41 @@ public class BookTicketDiaLog {
                         trips.add(new Trip(jsonArray.get(i).toString()));
                     }
                     showTrips();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                functionSystem.showDialogError(message.getMessage());
+            }
+        }
+    }
+
+    private class creatNewTicketAPI extends AsyncTask<String, String, String> {
+        protected void onPreExecute() {
+            super.onPreExecute();
+            functionSystem.showLoading();
+        }
+
+        protected String doInBackground(String... params) {
+            return functionSystem.postMethod(context.getResources().getString(R.string.host_api).toString() + "ticket", params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            functionSystem.hideLoading();
+            Message message = new Message(result);
+            if(message.getCode() == 200){
+                try {//Tra ve danh sach ticket da tao thanh cong
+                    JSONArray jsonArray = new JSONArray(message.getData());
+                    String [] ticketIds = new String[jsonArray.length()];
+
+                    for (int i = 0; i < jsonArray.length(); i++){//Loc ra danh sach Id, gui sang thanh toan
+                        ticketIds[i] = jsonArray.getJSONObject(i).getString("_id");
+                    }
+
+                    alertDialog.dismiss();
+                    new PaymentDiaLog(context, car, ticketIds).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

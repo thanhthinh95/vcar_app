@@ -34,7 +34,7 @@ public class InforCarDiaLog {
     int currentIndex = 0;
     boolean direction = true; //Phuong huong di chuyen, true: xuoi; false : ngược
 
-     AlertDialog alertDialog;
+    private AlertDialog alertDialog;
 
     public InforCarDiaLog(Context context, Car car) {
         this.context = context;
@@ -64,7 +64,7 @@ public class InforCarDiaLog {
 
 
     private void addControls(View view) {
-        recy_pointStop = view.findViewById(R.id.recy_info_car_pointStop);
+        recy_pointStop = view.findViewById(R.id.recy_payment_ticket);
         txt_controlSea = view.findViewById(R.id.txt_info_car_controSea);
         txt_type = view.findViewById(R.id.txt_book_ticket_type);
         txt_fare = view.findViewById(R.id.txt_book_ticket_fare);
@@ -73,8 +73,8 @@ public class InforCarDiaLog {
         img_image = view.findViewById(R.id.img_info_car_image);
         imgbtn_prev = view.findViewById(R.id.imgbtn_info_car_prev);
         imgbtn_next = view.findViewById(R.id.imgbtn_info_car_next);
-        btn_back = view.findViewById(R.id.btn_book_ticket_back);
-        btn_next = view.findViewById(R.id.btn_book_ticket_next);
+        btn_back = view.findViewById(R.id.btn_payment_back);
+        btn_next = view.findViewById(R.id.btn_payment_next);
         imgbtn_trans = view.findViewById(R.id.imgbtn_book_ticket_trans);
     }
 

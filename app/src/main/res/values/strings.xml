@@ -70,6 +70,7 @@
     <string name="dialog_got_it">Đã hiểu</string>
     <string name="dialog_back">Trở lại</string>
     <string name="dialog_next">Tiếp Tục</string>
+    <string name="dialog_complete">Hoàn tất</string>
 
     <!--Login-->
     <string name="title_activity_login">LoginActivity</string>
@@ -135,6 +136,25 @@
     <string name="book_ticket_seat_selected">Đã chọn</string>
     <string name="book_ticket_seat_selecting">Đang chọn</string>
     <string name="dialog_book_ticket_error_trip">Không có thông tin hiển thị chuyến đi. Thử lại sau</string>
+    <string name="book_ticket_message_error_trip">Bạn chưa chọn chuyến đi, Kiểm tra lại thời gian khởi hành</string>
+    <string name="book_ticket_message_error_seat">Hãy chọn ít nhất một ghế</string>
+
+    <!--    PaymentDialog-->
+    <string name="payment_title">Thanh Toán</string>
+    <string name="payment_code_promotion">Mã giảm giá</string>
+    <string name="payment_hint_code_promotion">VD: VC43</string>
+    <string name="payment_money">Giá tiền</string>
+    <string name="payment_discount">Giảm giá</string>
+    <string name="payment_totalMoney">Tổng tiền</string>
+    <string name="payment_case">Tiền mặt</string>
+    <string name="payment_visa_card">Visa card</string>
+<!--    <string name="book_ticket_hours">Giờ xuất phát</string>-->
+<!--    <string name="book_ticket_sum_money">Tổng tiền</string>-->
+<!--    <string name="book_ticket_seat_diagram">Sơ đồ</string>-->
+<!--    <string name="book_ticket_seat_emply">Còn trống</string>-->
+<!--    <string name="book_ticket_seat_selected">Đã chọn</string>-->
+<!--    <string name="book_ticket_seat_selecting">Đang chọn</string>-->
+<!--    <string name="dialog_book_ticket_error_trip">Không có thông tin hiển thị chuyến đi. Thử lại sau</string>-->
 
 
 

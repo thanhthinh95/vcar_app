@@ -37,8 +37,9 @@ import static android.provider.AlarmClock.EXTRA_MESSAGE;
 public class MainActivity extends AppCompatActivity {
     TextView mTextMessage;
     FunctionSystem functionSystem = new FunctionSystem(this);
-
     private BottomNavigationView navView;
+
+    public static String idCustomer = "";
     private final String BACK_STACK_ROOT_HOME = "root_fragment_home";
     private final String BACK_STACK_ROOT_TICKET = "root_fragment_home";
     private final String BACK_STACK_ROOT_NOTIFICATION = "root_fragment_notification";
@@ -113,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == getResources().getInteger(R.integer.request_check) && resultCode == getResources().getInteger(R.integer.result_check)){
             buildStart();
+            idCustomer = data.getStringExtra("id");
             addFragment(new fragmentHome(), null);
         }else if(requestCode == getResources().getInteger(R.integer.request_check) && resultCode == getResources().getInteger(R.integer.result_login_finish)){
             finish();
