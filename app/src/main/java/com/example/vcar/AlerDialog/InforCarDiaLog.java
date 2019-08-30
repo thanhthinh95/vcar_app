@@ -61,19 +61,17 @@ public class InforCarDiaLog {
         }
     }
 
-
-
     private void addControls(View view) {
         recy_pointStop = view.findViewById(R.id.recy_payment_ticket);
         txt_controlSea = view.findViewById(R.id.txt_info_car_controSea);
-        txt_type = view.findViewById(R.id.txt_book_ticket_type);
+        txt_type = view.findViewById(R.id.txt_promotion_detail_route);
         txt_fare = view.findViewById(R.id.txt_book_ticket_fare);
         txt_pointStop = view.findViewById(R.id.txt_info_car_pointStop);
-        txt_route = view.findViewById(R.id.txt_book_ticket_route);
+        txt_route = view.findViewById(R.id.txt_promotion_detail_nameCarSupplier);
         img_image = view.findViewById(R.id.img_info_car_image);
         imgbtn_prev = view.findViewById(R.id.imgbtn_info_car_prev);
         imgbtn_next = view.findViewById(R.id.imgbtn_info_car_next);
-        btn_back = view.findViewById(R.id.btn_payment_back);
+        btn_back = view.findViewById(R.id.btn_promotion_detail_back);
         btn_next = view.findViewById(R.id.btn_payment_next);
         imgbtn_trans = view.findViewById(R.id.imgbtn_book_ticket_trans);
     }

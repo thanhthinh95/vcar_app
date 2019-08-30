@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -59,6 +60,7 @@ public class BookTicketDiaLog {
     private JSONObject seatSelecting = new JSONObject();
     private AlertDialog alertDialog;
     private List<Trip> trips = null;
+    private List<Trip> tripshow = null;
     private Date dateStart = new Date();
 
     public BookTicketDiaLog(Context context, Car car, boolean direction) {
@@ -95,11 +97,11 @@ public class BookTicketDiaLog {
         conlay_info_ticket = view.findViewById(R.id.conlay_book_ticket_info_ticket);
         conlay_seat_diagram = view.findViewById(R.id.conlay_book_ticket_seatdiagram);
         txt_controlSea = view.findViewById(R.id.txt_bookt_ticket_controlsea);
-        txt_type = view.findViewById(R.id.txt_book_ticket_type);
+        txt_type = view.findViewById(R.id.txt_promotion_detail_route);
         txt_fare = view.findViewById(R.id.txt_book_ticket_fare);
         imgbtn_collapse_extend = view.findViewById(R.id.imgbtn_book_ticket_collapse_extend);
-        txt_route = view.findViewById(R.id.txt_book_ticket_route);
-        btn_back = view.findViewById(R.id.btn_payment_back);
+        txt_route = view.findViewById(R.id.txt_promotion_detail_nameCarSupplier);
+        btn_back = view.findViewById(R.id.btn_promotion_detail_back);
         btn_next = view.findViewById(R.id.btn_payment_next);
         imgbtn_trans = view.findViewById(R.id.imgbtn_book_ticket_trans);
         tbl_diagram = view.findViewById(R.id.tbl_book_ticket_diagram);
@@ -210,7 +212,7 @@ public class BookTicketDiaLog {
                         JSONObject jsonObject = new JSONObject();
                         jsonObject.put("action", "createNew");
                         jsonObject.put("customerId", MainActivity.idCustomer);
-                        jsonObject.put("tripId", trips.get(sp_hours.getSelectedItemPosition()).getId());
+                        jsonObject.put("tripId", tripshow.get(sp_hours.getSelectedItemPosition()).getId());
                         jsonObject.put("dateStart", functionSystem.dateOnlyFormat.format(dateStart));
                         jsonObject.put("fare", car.getFare());
                         jsonObject.put("positions", seatSelecting.toString());
@@ -535,24 +537,24 @@ public class BookTicketDiaLog {
 
             sp_hours.setAdapter(null);
             Date dateNow = new Date();
-            if(functionSystem.dateOnlyFormat.format(dateStart).equals(functionSystem.dateOnlyFormat.format(dateNow))){//Ngay khoi hanh la ngay hom nay
-                String dateTimeValue;
+            String dateTimeValue;
 
-                for(int i = 0; i < trips.size(); i++){
-                    try {
-                        if(trips.get(i).getType() == typeMach){
+            tripshow = new ArrayList<Trip>();
+
+            for(int i = 0; i < trips.size(); i++){
+                if(trips.get(i).getType() == typeMach){
+                    if(functionSystem.dateOnlyFormat.format(dateStart).equals(functionSystem.dateOnlyFormat.format(dateNow))) {//Ngay khoi hanh la ngay hom nay
+                        try {
                             dateTimeValue = functionSystem.dateOnlyFormat.format(dateStart) + " " + trips.get(i).getTimeStartString();
                             if(dateNow.getTime() < functionSystem.dateTimeFormat.parse(dateTimeValue).getTime()) {//Hien thi nhung chuyen di trong tuong lai
                                 listValue.add(trips.get(i).getTimeStartString());
+                                tripshow.add(trips.get(i));
                             }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
                         }
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }else{//Ngay khoi hanh khong phai la hom nay
-                for(int i = 0; i < trips.size(); i++){
-                    if(trips.get(i).getType() == typeMach){//Hien thi tat ca cac chuyen di theo chieu xuoi / nguoc
+                    }else{//Ngay khoi hanh khong phai la hom nay
+                        tripshow.add(trips.get(i));
                         listValue.add(trips.get(i).getTimeStartString());
                     }
                 }

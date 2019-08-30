@@ -26,6 +26,7 @@ import java.net.HttpURLConnection;
 import java.net.NetworkInterface;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
@@ -39,7 +40,10 @@ public class FunctionSystem {
     }
 
     public DateFormat dateOnlyFormat = new SimpleDateFormat("dd/MM/yyyy");
+    public DateFormat timeOnLyFormat = new SimpleDateFormat("HH:mm");
     public DateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+    public DecimalFormat formatMoney = new DecimalFormat("###,###,###");
 
 
     public String getAddress(){

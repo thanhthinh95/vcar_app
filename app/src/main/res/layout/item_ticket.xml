@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/ticket_background"
+    android:background="@drawable/ticket_background_unpaid"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -35,39 +34,32 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/vcar_icon" />
 
-        <ImageView
-            android:id="@+id/imageView8"
-            android:layout_width="14dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="15dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/ic_local_phone_black_24dp"
-            tools:layout_editor_absoluteY="144dp" />
-
         <TextView
-            android:id="@+id/txt_home_supplierCar_route"
-            android:layout_width="130dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="80dp"
-            android:rotation="90"
-            android:text="@string/text_demo"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/txt_home_supplierCar_fare"
-            android:layout_width="wrap_content"
+            android:id="@+id/txt_ticket_number"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="80dp"
             android:text="@string/text_demo"
+            android:textAlignment="viewEnd"
             android:textColor="@android:color/white"
-            app:layout_constraintStart_toEndOf="@+id/imageView8"
-            tools:layout_editor_absoluteY="144dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_ticket_position" />
 
         <TextView
-            android:id="@+id/txt_home_supplierCar_name"
+            android:id="@+id/txt_ticket_fare"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/text_demo"
+            android:textAlignment="viewEnd"
+            android:textColor="@android:color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_ticket_position" />
+
+        <TextView
+            android:id="@+id/txt_ticket_carSupplierName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -82,13 +74,13 @@
         <TextView
             android:id="@+id/textView4"
             android:layout_width="0dp"
-            android:layout_height="20dp"
+            android:layout_height="22dp"
             android:layout_marginStart="40dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="100dp"
             android:freezesText="false"
             android:hyphenationFrequency="normal"
-            android:text="Vé xe trực tuyến"
+            android:text="VÉ XE TRỰC TUYẾN"
             android:textAlignment="center"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
@@ -96,33 +88,45 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_home_supplierCar_name" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_ticket_carSupplierName" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/txt_ticket_date"
             android:layout_width="0dp"
             android:layout_height="21dp"
-            android:layout_marginStart="55dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="100dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="80dp"
             android:text="Khởi hành: 00/00/0000 00:00"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_ticket_route" />
+
+        <TextView
+            android:id="@+id/txt_ticket_route"
+            android:layout_width="0dp"
+            android:layout_height="21dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="80dp"
+            android:text="Bến xe Mỹ Đình - Bến xe Ninh Bình"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <TextView
-            android:id="@+id/textView7"
+            android:id="@+id/txt_ticket_position"
             android:layout_width="0dp"
             android:layout_height="21dp"
-            android:layout_marginStart="55dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginEnd="100dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="80dp"
             android:text="Ví trí : 1C1"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_ticket_date" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,6 +8,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class Trip {
     private String id;
@@ -15,7 +17,7 @@ public class Trip {
     private int type;
     private Date timeStart;
 
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.UK);
     DateFormat dateFormatOutput = new SimpleDateFormat("HH:mm");
 
 
@@ -28,7 +30,9 @@ public class Trip {
             this.id = jsonObject.getString("_id");
             this.carId = jsonObject.getString("carId");
             this.type = jsonObject.getInt("type");
+            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             this.timeStart = dateFormat.parse(jsonObject.getString("timeStart"));
+
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (ParseException e) {

@@ -17,8 +17,8 @@
 <!--    ticket-->
     <string name="ticket_title">Vé của tôi</string>
 
-<!--    notification-->
-    <string name="notification_title">Thông báo</string>
+<!--    promotion-->
+    <string name="promotion_title">Khuyến mại</string>
 
 <!--    account-->
 
@@ -27,7 +27,7 @@
     <!--    navi menu-->
     <string name="menu_home">Trang chủ</string>
     <string name="menu_ticket">Vé của tôi</string>
-    <string name="menu_notification">Thông báo</string>
+    <string name="menu_promotion">Khuyến mại</string>
     <string name="menu_account">Tài khoản</string>
 
     <!--intentValue-->
@@ -53,14 +53,14 @@
     <string name="message_password_repeat_invalid">Xác nhận mật khẩu không khớp</string>
 
 
-<!--    server-->
-    <string name="ipServer">108.160.129.143</string>
-    <string name="host">http://108.160.129.143:4000/</string>
-    <string name="host_api">http://108.160.129.143:4000/api/</string>
+<!--    server-->T
+<!--    <string name="ipServer">108.160.129.143</string>-->
+<!--    <string name="host">http://108.160.129.143:4000/</string>-->
+<!--    <string name="host_api">http://108.160.129.143:4000/api/</string>-->
 
-<!--    <string name="ipServer">192.168.1.3</string>-->
-<!--    <string name="host">http://192.168.1.3:4000/</string>-->
-<!--    <string name="host_api">http://192.168.1.3:4000/api/</string>-->
+    <string name="ipServer">192.168.1.3</string>
+    <string name="host">http://192.168.1.3:4000/</string>
+    <string name="host_api">http://192.168.1.3:4000/api/</string>
 
     <string name="token_api">ABC</string>
     <integer name="timeout_server">10000</integer>
@@ -148,13 +148,15 @@
     <string name="payment_totalMoney">Tổng tiền</string>
     <string name="payment_case">Tiền mặt</string>
     <string name="payment_visa_card">Visa card</string>
-<!--    <string name="book_ticket_hours">Giờ xuất phát</string>-->
-<!--    <string name="book_ticket_sum_money">Tổng tiền</string>-->
-<!--    <string name="book_ticket_seat_diagram">Sơ đồ</string>-->
-<!--    <string name="book_ticket_seat_emply">Còn trống</string>-->
-<!--    <string name="book_ticket_seat_selected">Đã chọn</string>-->
-<!--    <string name="book_ticket_seat_selecting">Đang chọn</string>-->
-<!--    <string name="dialog_book_ticket_error_trip">Không có thông tin hiển thị chuyến đi. Thử lại sau</string>-->
+    <string name="payment_message_error_ticket">Không có vé nào để thanh toán, thử lại sau</string>
+
+
+
+
+    <!--    Promotion-->
+    <string name="dialog_detail_promotion">Chi tiết khuyến mại</string>
+    <string name="dialog_detail_note">Chương trình này có thể kết thúc sớm hơn dự kiến nếu đạt ngưỡng giới hạn ngân sách hoặc hết số lượng phân phối</string>
+
 
 
 

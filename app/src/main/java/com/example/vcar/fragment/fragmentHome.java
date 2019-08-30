@@ -164,7 +164,6 @@ public class fragmentHome extends Fragment implements View.OnContextClickListene
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-                    Log.w("TAG", "bay");
                     if(y<=0){
                         if(!statusShowConLayoutFind){
                             slideDown();

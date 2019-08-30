@@ -13,7 +13,7 @@ import android.os.Bundle;
 
 import com.example.vcar.fragment.fragmentAccount;
 import com.example.vcar.fragment.fragmentHome;
-import com.example.vcar.fragment.fragmentNotification;
+import com.example.vcar.fragment.fragmentPromotion;
 import com.example.vcar.fragment.fragmentTicket;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     public static String idCustomer = "";
     private final String BACK_STACK_ROOT_HOME = "root_fragment_home";
     private final String BACK_STACK_ROOT_TICKET = "root_fragment_home";
-    private final String BACK_STACK_ROOT_NOTIFICATION = "root_fragment_notification";
+    private final String BACK_STACK_ROOT_promotion = "root_fragment_promotion";
     private final String BACK_STACK_ROOT_ACCOUNT = "root_fragment_account";
 
 
@@ -79,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.navi_ticket:
                         addFragment(new fragmentTicket(), null);
                         return true;
-                    case R.id.navi_notification:
-                        addFragment(new fragmentNotification(), null);
+                    case R.id.navi_promotion:
+                        addFragment(new fragmentPromotion(), null);
                         return true;
                     case R.id.navi_account:
                         addFragment(new fragmentAccount(), null);

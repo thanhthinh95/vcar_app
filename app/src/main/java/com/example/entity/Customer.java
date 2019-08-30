@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class Customer {
     private String id;
@@ -40,8 +41,15 @@ public class Customer {
 
             this.status = jsonObject.getInt("status");
 
-            this.created = dateFormat.parse(jsonObject.getString("created"));
-            this.updated = dateFormat.parse(jsonObject.getString("updated"));
+            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+            if(!jsonObject.isNull("created")){
+                this.created = dateFormat.parse(jsonObject.getString("created"));
+            }
+
+            if(!jsonObject.isNull("updated")){
+                this.updated = dateFormat.parse(jsonObject.getString("updated"));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (ParseException e) {

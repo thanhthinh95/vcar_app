@@ -43,10 +43,10 @@ public class SupplierCarAdapter extends RecyclerView.Adapter<SupplierCarAdapter.
         }
 
         private void addControls() {
-            txt_name = itemView.findViewById(R.id.txt_home_supplierCar_name);
-            txt_route = itemView.findViewById(R.id.txt_home_supplierCar_route);
+            txt_name = itemView.findViewById(R.id.txt_ticket_carSupplierName);
+            txt_route = itemView.findViewById(R.id.txt_promotion_code);
             rec_listData = itemView.findViewById(R.id.recy_home_supplierCar_listCar);
-            txt_fare = itemView.findViewById(R.id.txt_home_supplierCar_fare);
+            txt_fare = itemView.findViewById(R.id.txt_ticket_number);
             txt_numberPhone = itemView.findViewById(R.id.txt_home_supplierCar_numberPhone);
         }
 

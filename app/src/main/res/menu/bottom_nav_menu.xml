@@ -12,9 +12,9 @@
         android:title="@string/menu_ticket" />
 
     <item
-        android:id="@+id/navi_notification"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/menu_notification" />
+        android:id="@+id/navi_promotion"
+        android:icon="@drawable/percentage"
+        android:title="@string/menu_promotion" />
 
     <item
         android:id="@+id/navi_account"
