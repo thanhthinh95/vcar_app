@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <Button
+        android:id="@+id/btn_ticketvote_ok"
+        android:layout_width="150dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/background_button_success"
+        android:text="@string/dialog_ok"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_ticket_vote_complain" />
+
+    <Button
+        android:id="@+id/btn_ticketvote_back"
+        android:layout_width="150dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/background_button_back"
+        android:text="@string/dialog_back"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_ticket_vote_complain" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="@string/ticket_vote_note"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgbtn_ticket_stars_3" />
+
+    <ImageButton
+        android:background="@drawable/background_none"
+        android:id="@+id/imgbtn_ticket_stars_1"
+        android:layout_width="36dp"
+        android:layout_height="39dp"
+        android:scaleType="fitXY"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintEnd_toStartOf="@+id/imgbtn_ticket_stars_2"
+        app:layout_constraintTop_toBottomOf="@+id/imageView28"
+        app:srcCompat="@drawable/ic_star_border_black_24dp" />
+
+    <ImageButton
+        android:background="@drawable/background_none"
+        android:id="@+id/imgbtn_ticket_stars_2"
+        android:layout_width="36dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="15dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toStartOf="@+id/imgbtn_ticket_stars_3"
+        app:layout_constraintTop_toBottomOf="@+id/imageView28"
+        app:srcCompat="@drawable/ic_star_border_black_24dp" />
+
+    <ImageButton
+        android:background="@drawable/background_none"
+        android:id="@+id/imgbtn_ticket_stars_3"
+        android:layout_width="36dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView28"
+        app:srcCompat="@drawable/ic_star_border_black_24dp" />
+
+    <ImageButton
+        android:background="@drawable/background_none"
+        android:id="@+id/imgbtn_ticket_stars_4"
+        android:layout_width="36dp"
+        android:layout_height="39dp"
+        android:scaleType="fitXY"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintStart_toEndOf="@+id/imgbtn_ticket_stars_3"
+        app:layout_constraintTop_toBottomOf="@+id/imageView28"
+        app:srcCompat="@drawable/ic_star_border_black_24dp" />
+
+    <ImageButton
+        android:id="@+id/imgbtn_ticket_stars_5"
+        android:layout_width="36dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="15dp"
+        android:scaleType="fitXY"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/background_none"
+        app:layout_constraintStart_toEndOf="@+id/imgbtn_ticket_stars_4"
+        app:layout_constraintTop_toBottomOf="@+id/imageView28"
+        app:srcCompat="@drawable/ic_star_border_black_24dp" />
+
+    <ImageView
+        android:id="@+id/imageView28"
+        android:layout_width="180dp"
+        android:layout_height="165dp"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="116dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon_vote" />
+
+    <EditText
+        android:id="@+id/edit_ticket_vote_complain"
+        android:layout_width="0dp"
+        android:layout_height="129dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="25dp"
+        android:background="@drawable/background_edittext_while"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

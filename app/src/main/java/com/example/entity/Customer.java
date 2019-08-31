@@ -16,6 +16,7 @@ public class Customer {
     private String id;
     private String name;
     private String password;
+    private int gender = -9999;
     private String numberPhone;
     private String email;
     private String macAddress;
@@ -39,10 +40,15 @@ public class Customer {
             this.email = jsonObject.getString("email");
             this.macAddress = jsonObject.getString("macAddress");
 
-            this.status = jsonObject.getInt("status");
+            if(!jsonObject.isNull("gender")){
+                this.gender = jsonObject.getInt("gender");
+            }
+
+            if(!jsonObject.isNull("status")){
+                this.status = jsonObject.getInt("status");
+            }
 
             dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-
             if(!jsonObject.isNull("created")){
                 this.created = dateFormat.parse(jsonObject.getString("created"));
             }
@@ -80,6 +86,14 @@ public class Customer {
 
     public String getId() {
         return id;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
     }
 
     public void setId(String id) {

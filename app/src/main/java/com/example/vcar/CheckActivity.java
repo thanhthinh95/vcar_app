@@ -7,11 +7,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +24,7 @@ public class CheckActivity extends AppCompatActivity {
     final FunctionSystem functionSystem = new FunctionSystem(this);
 
     ProgressBar prb_load;
+    boolean statusLogout = false;
 
 
     @Override
@@ -33,25 +36,48 @@ public class CheckActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if(functionSystem.isNetworkAvailable()){
+        if (functionSystem.isNetworkAvailable()) {
             changeAnimationProgressBar(10);
 
-            if(functionSystem.getAddress() != null){
+            if (functionSystem.getAddress() != null) {
                 changeAnimationProgressBar(20);
 
 
                 if (functionSystem.pingToServer()) {
                     changeAnimationProgressBar(30);
-                    checkDataLoginOld();
-                }else{
+
+                    if (statusLogout) {//Fragment Account yeu cau dang xuat
+
+                        try {
+                            JSONObject jsonObject = new JSONObject();
+                            jsonObject.put("id", "");
+                            jsonObject.put("userName", "");
+                            jsonObject.put("password", "");
+                            jsonObject.put("macAddress", "");
+                            jsonObject.put("status", statusLogout);
+                            writeFileInfo(jsonObject.toString());
+
+                            sendIntentToLoginActivity("", "", true);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    } else {
+                        checkDataLoginOld();
+                    }
+                } else {
                     functionSystem.showDialogError(getResources().getString(R.string.check_error_server) + " " + getResources().getString(R.string.ipServer));
                 }
-            }else{
+            } else {
                 functionSystem.showDialogError(getResources().getString(R.string.check_error_mac));
             }
-        }else{
+
+
+
+        } else {
             functionSystem.showDialogError(getResources().getString(R.string.check_error_network));
         }
+
     }
 
     @Override
@@ -61,6 +87,10 @@ public class CheckActivity extends AppCompatActivity {
 
         addControls();
         setValues();
+
+        Intent intent = getIntent();
+        statusLogout = intent.getBooleanExtra("logout", false);
+
     }
 
     private void addControls() {
@@ -77,17 +107,19 @@ public class CheckActivity extends AppCompatActivity {
         changeAnimationProgressBar(60);
 
         String userName = null, password = null;
+        boolean status = false;
         if(data != null){
             try {
                 JSONObject jsonObject = new JSONObject(data);
                 userName = jsonObject.getString("userName");
                 password = jsonObject.getString("password");
+                status = jsonObject.getBoolean("status");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
 
-        sendIntentToLoginActivity(userName, password);
+        sendIntentToLoginActivity(userName, password, status);
     }
 
 
@@ -106,6 +138,7 @@ public class CheckActivity extends AppCompatActivity {
                 jsonObject.put("userName", data.getStringExtra("userName"));
                 jsonObject.put("password", data.getStringExtra("password"));
                 jsonObject.put("macAddress", data.getStringExtra("macAddress"));
+                jsonObject.put("status", false);
 
                 writeFileInfo(jsonObject.toString());
                 sendResultIntent(data.getStringExtra("id"));
@@ -125,8 +158,14 @@ public class CheckActivity extends AppCompatActivity {
         if(dataId == null){//Activity gui yeu cau finish()
             setResult(getResources().getInteger(R.integer.result_login_finish), intent);
         }else{
-            intent.putExtra("id", dataId);
-            setResult(getResources().getInteger(R.integer.result_check), intent);
+            if(statusLogout){
+                intent.putExtra("id", dataId);
+                setResult(getResources().getInteger(R.integer.result_logout), intent);
+            }else{
+                intent.putExtra("id", dataId);
+                setResult(getResources().getInteger(R.integer.result_check), intent);
+            }
+
         }
 
         finish();
@@ -174,13 +213,14 @@ public class CheckActivity extends AppCompatActivity {
         return null;
     }
 
-    public void sendIntentToLoginActivity(String userName, String password) {
+    public void sendIntentToLoginActivity(String userName, String password, Boolean status) {
         changeAnimationProgressBar(70);
         Intent intent = new Intent(this, LoginActivity.class);
         if(userName != null && password != null){
             intent.putExtra("checkData", true);
             intent.putExtra("userName", userName);
             intent.putExtra("password", password);
+            intent.putExtra("status", status);
         }else {
             intent.putExtra("checkData", false);
         }

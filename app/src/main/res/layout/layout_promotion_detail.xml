@@ -247,7 +247,7 @@
         app:layout_constraintTop_toBottomOf="@+id/conlay_book_ticket_info_car">
 
         <Button
-            android:id="@+id/btn_promotion_detail_back"
+            android:id="@+id/btn_account_back"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"

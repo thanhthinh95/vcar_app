@@ -9,6 +9,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -17,7 +18,6 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -50,7 +50,7 @@ public class BookTicketDiaLog {
     private TableLayout tbl_diagram;
     private Button btn_back, btn_next;
 
-    private int currendFloor = 0;
+    private int currentFloor = 0;
     private int sumSeatEmpty = 0;
     private int sumSeatSelected = 0;
     private int sumSeatSelecting = 0;
@@ -58,9 +58,10 @@ public class BookTicketDiaLog {
     private boolean statusCollapse = true;//Trang thai dong mo menu, true: dong, false: mo
 
     private JSONObject seatSelecting = new JSONObject();
+    private JSONObject seatSelected = new JSONObject();
     private AlertDialog alertDialog;
     private List<Trip> trips = null;
-    private List<Trip> tripshow = null;
+    private List<Trip> tripShow = null;
     private Date dateStart = new Date();
 
     public BookTicketDiaLog(Context context, Car car, boolean direction) {
@@ -101,8 +102,8 @@ public class BookTicketDiaLog {
         txt_fare = view.findViewById(R.id.txt_book_ticket_fare);
         imgbtn_collapse_extend = view.findViewById(R.id.imgbtn_book_ticket_collapse_extend);
         txt_route = view.findViewById(R.id.txt_promotion_detail_nameCarSupplier);
-        btn_back = view.findViewById(R.id.btn_promotion_detail_back);
-        btn_next = view.findViewById(R.id.btn_payment_next);
+        btn_back = view.findViewById(R.id.btn_account_back);
+        btn_next = view.findViewById(R.id.btn_account_done);
         imgbtn_trans = view.findViewById(R.id.imgbtn_book_ticket_trans);
         tbl_diagram = view.findViewById(R.id.tbl_book_ticket_diagram);
         imgbtn_nextFloor = view.findViewById(R.id.imgbtn_book_ticket_nextfloor);
@@ -121,13 +122,10 @@ public class BookTicketDiaLog {
         if(car != null){
             txt_controlSea.setText(car.getNameSupplier() + " - " + car.getControlSea());
             txt_type.setText(context.getResources().getString(R.string.info_car_type) + ": " + car.getType() + " (" + car.getNumberSeat() + " chỗ)");
-            txt_fare.setText(context.getResources().getString(R.string.info_car_fare) + ": "+ car.getFare());
+            txt_fare.setText(context.getResources().getString(R.string.info_car_fare) + ": "+ functionSystem.formatMoney.format(car.getFare()) + " VNĐ");
 
             showDirection();
             showDateStart();
-
-            sumSeatEmpty = car.getNumberSeat();
-            showValueNumberSeat();
 
             try {
                 JSONObject jsonObject = new JSONObject();
@@ -136,17 +134,6 @@ public class BookTicketDiaLog {
                 new getTripAPI().execute(jsonObject.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
-            }
-
-
-            if(car.getSeatDiagram().length > 0){//Hien thi so do cho ngoi tang 1
-                currendFloor = 0;
-                showSeatDiagram(currendFloor);
-
-                if(car.getSeatDiagram().length == 1){
-                    imgbtn_nextFloor.setVisibility(View.INVISIBLE);
-                    imgbtn_prevFloor.setVisibility(View.INVISIBLE);
-                }
             }
         }
     }
@@ -212,7 +199,7 @@ public class BookTicketDiaLog {
                         JSONObject jsonObject = new JSONObject();
                         jsonObject.put("action", "createNew");
                         jsonObject.put("customerId", MainActivity.idCustomer);
-                        jsonObject.put("tripId", tripshow.get(sp_hours.getSelectedItemPosition()).getId());
+                        jsonObject.put("tripId", tripShow.get(sp_hours.getSelectedItemPosition()).getId());
                         jsonObject.put("dateStart", functionSystem.dateOnlyFormat.format(dateStart));
                         jsonObject.put("fare", car.getFare());
                         jsonObject.put("positions", seatSelecting.toString());
@@ -228,28 +215,42 @@ public class BookTicketDiaLog {
         imgbtn_nextFloor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(currendFloor < car.getSeatDiagram().length - 1){
-                    currendFloor++;
+                if(currentFloor < car.getSeatDiagram().length - 1){
+                    currentFloor++;
                 }else{
-                    currendFloor = 0;
+                    currentFloor = 0;
                 }
 
-                showSeatDiagram(currendFloor);
+                showSeatDiagram(currentFloor);
             }
         });
 
         imgbtn_prevFloor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(currendFloor == 0){
-                    currendFloor = car.getSeatDiagram().length - 1;
+                if(currentFloor == 0){
+                    currentFloor = car.getSeatDiagram().length - 1;
                 }else{
-                    currendFloor --;
+                    currentFloor --;
                 }
 
-                showSeatDiagram(currendFloor);
+                showSeatDiagram(currentFloor);
             }
         });
+
+        sp_hours.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                findPositionSeatSelected();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
     }
 
     private boolean validateInfoBooking(){
@@ -325,7 +326,6 @@ public class BookTicketDiaLog {
             JSONObject data = map.getJSONObject("data");
 
             String nameSeat;
-
             tbl_diagram.removeAllViews();
 
             for (int row = 0; row < numRow; row++) {
@@ -348,12 +348,21 @@ public class BookTicketDiaLog {
                     }else if(data.getString(nameSeat).equals("1")){//Vi tri ghe
                         btn_seat.setText(nameSeat);
 
+                        if(!seatSelected.isNull(nameSeat)){//Ghe nay da co nguoi chon roi
+                            btn_seat.setBackgroundResource(R.drawable.background_seat_selected);
+                        }else if(!seatSelecting.isNull(nameSeat)){//Neu ghe da duoc chon truoc do, hien thi lai
+                            btn_seat.setBackgroundResource(R.drawable.background_seat_selecting);
+                        }else{
+                            btn_seat.setBackgroundResource(R.drawable.background_seat_emply);
+                        }
 
                         btn_seat.setOnClickListener(new View.OnClickListener() {//Su kien khi click chon ghe
                             @Override
                             public void onClick(View view) {
                                 try {
-                                    if(!seatSelecting.isNull(btn_seat.getText().toString())){//Ghe da chon truoc do, huy bo cho
+                                    if(!seatSelected.isNull(btn_seat.getText().toString())){//Ghe nay da co nguoi chon roi
+
+                                    }else if(!seatSelecting.isNull(btn_seat.getText().toString())){//Ghe da chon truoc do, huy bo cho
                                         seatSelecting.remove(btn_seat.getText().toString());
                                         btn_seat.setBackgroundResource(R.drawable.background_seat_emply);
                                         sumSeatSelecting--;
@@ -372,14 +381,6 @@ public class BookTicketDiaLog {
                                 }
                             }
                         });
-
-
-                        if(!seatSelecting.isNull(btn_seat.getText().toString())){//Neu ghe da duoc chon truoc do, hien thi lai
-                            btn_seat.setBackgroundResource(R.drawable.background_seat_selecting);
-
-                        }else{
-                            btn_seat.setBackgroundResource(R.drawable.background_seat_emply);
-                        }
                     }
 
 
@@ -397,7 +398,7 @@ public class BookTicketDiaLog {
         txt_seat_empty.setText(context.getResources().getString(R.string.book_ticket_seat_emply) + ": " + sumSeatEmpty);
         txt_seat_selected.setText(context.getResources().getString(R.string.book_ticket_seat_selected) + ": " + sumSeatSelected);
         txt_seat_selecting.setText(context.getResources().getString(R.string.book_ticket_seat_selecting) + ": " + sumSeatSelecting);
-        txt_sum_money.setText((car.getFare() * sumSeatSelecting) + " VNĐ");
+        txt_sum_money.setText(functionSystem.formatMoney.format(car.getFare() * sumSeatSelecting) + " VNĐ");
     }
 
     private String mapNumber(int number) {
@@ -527,6 +528,46 @@ public class BookTicketDiaLog {
         }
     }
 
+    private class getPositionSelectedAPI extends AsyncTask<String, String, String> {
+        protected void onPreExecute() {
+            super.onPreExecute();
+            functionSystem.showLoading();
+        }
+
+        protected String doInBackground(String... params) {
+            return functionSystem.postMethod(context.getResources().getString(R.string.host_api).toString() + "ticket", params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            functionSystem.hideLoading();
+            Message message = new Message(result);
+            if(message.getCode() == 200){
+                try {
+                    JSONArray jsonArray = new JSONArray(message.getData());
+                    for(int i = 0; i < jsonArray.length(); i++){
+                        JSONObject object =  new JSONObject(jsonArray.get(i).toString());
+                        seatSelected.put(object.getString("position"), 2);
+                    }
+
+                    sumSeatSelected = jsonArray.length();
+                    sumSeatEmpty = car.getNumberSeat() - sumSeatSelected;
+
+                    showValueNumberSeat();
+                    showSeatDiagram(currentFloor);
+                    conlay_seat_diagram.setVisibility(View.VISIBLE);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                functionSystem.showDialogError(message.getMessage());
+                conlay_seat_diagram.setVisibility(View.GONE);
+            }
+        }
+    }
+
+
     private void showTrips() {
         if(trips != null && trips.size() > 0){
             List<String> listValue = new ArrayList<String>();
@@ -539,7 +580,7 @@ public class BookTicketDiaLog {
             Date dateNow = new Date();
             String dateTimeValue;
 
-            tripshow = new ArrayList<Trip>();
+            tripShow = new ArrayList<Trip>();
 
             for(int i = 0; i < trips.size(); i++){
                 if(trips.get(i).getType() == typeMach){
@@ -548,13 +589,13 @@ public class BookTicketDiaLog {
                             dateTimeValue = functionSystem.dateOnlyFormat.format(dateStart) + " " + trips.get(i).getTimeStartString();
                             if(dateNow.getTime() < functionSystem.dateTimeFormat.parse(dateTimeValue).getTime()) {//Hien thi nhung chuyen di trong tuong lai
                                 listValue.add(trips.get(i).getTimeStartString());
-                                tripshow.add(trips.get(i));
+                                tripShow.add(trips.get(i));
                             }
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
                     }else{//Ngay khoi hanh khong phai la hom nay
-                        tripshow.add(trips.get(i));
+                        tripShow.add(trips.get(i));
                         listValue.add(trips.get(i).getTimeStartString());
                     }
                 }
@@ -564,7 +605,7 @@ public class BookTicketDiaLog {
             if(listValue.size() == 0){
                 String mesage = txt_route.getText().toString() + " " + functionSystem.dateOnlyFormat.format(dateStart) + " đã hết chuyến xe phục vụ. Hãy chọn ngày khác!";
                 functionSystem.showDialogError(mesage);
-
+                findPositionSeatSelected();
             }else{
                 ArrayAdapter adapter = new ArrayAdapter(context, android.R.layout.simple_spinner_item, listValue);
                 adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
@@ -572,6 +613,36 @@ public class BookTicketDiaLog {
             }
         }else {
             functionSystem.showDialogError(context.getResources().getString(R.string.dialog_book_ticket_error_trip));
+        }
+    }
+
+    private void findPositionSeatSelected() {
+        sumSeatSelecting = 0;
+        sumSeatEmpty = car.getNumberSeat();
+        sumSeatSelected = 0;
+
+        if(car.getSeatDiagram().length > 0 && sp_hours.getSelectedItemPosition() != -1){
+            currentFloor = 0;
+            seatSelecting = new JSONObject();
+            seatSelected = new JSONObject();
+
+            if(car.getSeatDiagram().length > 1){
+                imgbtn_nextFloor.setVisibility(View.VISIBLE);
+                imgbtn_prevFloor.setVisibility(View.VISIBLE);
+            }
+
+            try {//Lay vi tri cac ghe da chon
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("action", "getPositionSelected");
+                jsonObject.put("tripId", tripShow.get(sp_hours.getSelectedItemPosition()).getId());
+                jsonObject.put("dateStart", functionSystem.dateOnlyFormat.format(dateStart));
+                new getPositionSelectedAPI().execute(jsonObject.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }else{
+            conlay_seat_diagram.setVisibility(View.GONE);
         }
     }
 }

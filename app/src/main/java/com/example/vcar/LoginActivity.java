@@ -75,9 +75,12 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if(intent.getBooleanExtra("checkData", false)) {
-            edit_username.setText(intent.getStringExtra("userName"));
-            edit_password.setText(intent.getStringExtra("password"));
-            loginSystem();
+            boolean status = intent.getBooleanExtra("status", false);
+            if(!status){
+                edit_username.setText(intent.getStringExtra("userName"));
+                edit_password.setText(intent.getStringExtra("password"));
+                loginSystem();
+            }
         }
     }
 

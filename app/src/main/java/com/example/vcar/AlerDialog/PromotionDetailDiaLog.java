@@ -3,26 +3,14 @@ package com.example.vcar.AlerDialog;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.entity.Car;
-import com.example.entity.Message;
 import com.example.entity.Promotion;
 import com.example.vcar.FunctionSystem;
 import com.example.vcar.R;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class PromotionDetailDiaLog {
     private Context context;
@@ -71,7 +59,7 @@ public class PromotionDetailDiaLog {
         txt_discount = view.findViewById(R.id.txt_promotion_detail_discount);
         txt_date = view.findViewById(R.id.txt_promotion_detail_date);
         txt_status = view.findViewById(R.id.txt_promotion_detail_status);
-        btn_back = view.findViewById(R.id.btn_promotion_detail_back);
+        btn_back = view.findViewById(R.id.btn_account_back);
     }
 
     private void setValues() {
@@ -80,7 +68,7 @@ public class PromotionDetailDiaLog {
             txt_code.setText(promotion.getCode());
             txt_nameCarSupplier.setText("Nhà xe: " + promotion.getCarSupplierName());
             txt_route.setText(promotion.getRoute());
-            txt_budget.setText("Ngân sách: " + functionSystem.formatMoney.format(promotion.getBudget()) + " VNĐ");
+            txt_budget.setText("Ngân sách: " + (promotion.getBudget() != -9999 ? functionSystem.formatMoney.format(promotion.getBudget()) + " VNĐ" : "Không giới hạn"));
             txt_discount.setText("Giảm giá: " + functionSystem.formatMoney.format(promotion.getDiscount()) + " VNĐ");
             txt_date.setText(functionSystem.dateTimeFormat.format(promotion.getDateStart()) + " - " + functionSystem.dateTimeFormat.format(promotion.getDateEnd()));
             txt_status.setText((promotion.getStatus() == 1 ? "Còn hiệu lực" : "Hết hiệu lực"));

@@ -8,33 +8,29 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.Adapter.PointStopAdapter;
 import com.example.Adapter.TicketAdapter;
 import com.example.entity.Car;
 import com.example.entity.Message;
 import com.example.entity.Ticket;
 import com.example.vcar.FunctionSystem;
+import com.example.vcar.MainActivity;
 import com.example.vcar.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class PaymentDiaLog {
@@ -46,14 +42,15 @@ public class PaymentDiaLog {
     private EditText edit_code;
     private RecyclerView recy_ticket;
 
-    private TextView txt_money, txt_discount, txt_total_money;
+    private TextView txt_money, txt_discount, txt_total_payment;
     private RadioGroup grad_payment;
     private RadioButton rad_case, rad_visa_card;
-    private Button btn_back, btn_next;
+    private Button btn_back, btn_done;
 
     private  AlertDialog alertDialog;
     private List<Ticket> tickets = new ArrayList<>();
-    private long money = 0, discout = 0, totalMoney = 0;
+    private long money = 0, discount = 0, totalPayment = 0;
+    private String promotionId = null;
 
     public PaymentDiaLog(Context context, Car car, String[] ticketIds) {
         this.context = context;
@@ -89,12 +86,12 @@ public class PaymentDiaLog {
 
         txt_money = view.findViewById(R.id.txt_payment_money);
         txt_discount = view.findViewById(R.id.txt_payment_discount);
-        txt_total_money = view.findViewById(R.id.txt_payment_total_money);
+        txt_total_payment = view.findViewById(R.id.txt_payment_total_payment);
         grad_payment = view.findViewById(R.id.grad_payment_payment);
         rad_case = view.findViewById(R.id.rad_payment_case);
         rad_visa_card = view.findViewById(R.id.rad_payment_visa_card);
-        btn_back = view.findViewById(R.id.btn_promotion_detail_back);
-        btn_next = view.findViewById(R.id.btn_payment_next);
+        btn_back = view.findViewById(R.id.btn_account_back);
+        btn_done = view.findViewById(R.id.btn_account_done);
     }
 
     private void setValues() {
@@ -146,6 +143,37 @@ public class PaymentDiaLog {
                 return false;
             }
         });
+
+        btn_done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                JSONArray jsonArray = new JSONArray();
+                for(int i = 0; i < ticketIds.length; i++){
+                    jsonArray.put(ticketIds[i]);
+                }
+
+                try {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("action", "createNew");
+                    jsonObject.put("ticketIds", jsonArray.toString());
+                    jsonObject.put("customerId", MainActivity.idCustomer);
+                    jsonObject.put("promotionId", promotionId);
+                    jsonObject.put("type", 1);//Chi tien mat
+                    jsonObject.put("money", money);
+                    jsonObject.put("discount", discount);
+                    jsonObject.put("totalPayment", totalPayment);
+
+
+                    new createPaymentAPI().execute(jsonObject.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+
+
     }
 
     private void searchPromotion(String code) {
@@ -156,6 +184,30 @@ public class PaymentDiaLog {
             new getPromotionAPI().execute(jsonObject.toString());
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    private class createPaymentAPI extends AsyncTask<String, String, String> {
+        protected void onPreExecute() {
+            super.onPreExecute();
+            functionSystem.showLoading();
+        }
+
+        protected String doInBackground(String... params) {
+            return functionSystem.postMethod(context.getResources().getString(R.string.host_api).toString() + "payment", params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            functionSystem.hideLoading();
+            Message message = new Message(result);
+            if(message.getCode() == 200){
+                alertDialog.dismiss();
+                functionSystem.showDialogSuccess("Thanh toán thành công. Theo dõi vé trong vé của tôi");
+            }else{
+                functionSystem.showDialogError("Thanh toán thất bại, thử lại sau");
+            }
         }
     }
 
@@ -194,22 +246,24 @@ public class PaymentDiaLog {
             super.onPostExecute(result);
             functionSystem.hideLoading();
             Message message = new Message(result);
-            functionSystem.showDialogSuccess(result);
             if(message.getCode() == 200){
                 try {
                     JSONObject jsonObject = new JSONObject(message.getData());
-                    discout = jsonObject.getLong("discount");
+                    discount = jsonObject.getLong("discount");
+                    promotionId = jsonObject.getString("_id");
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    promotionId = null;
+                    discount = 0;
                 }
             }else{
                 functionSystem.showDialogError("Mã khuyến mại không hợp lệ");
                 edit_code.setText("");
-                discout = 0;
+                discount = 0;
                 showValueMoneyPayment();
             }
 
-            totalMoney = money - discout;
+            totalPayment = money - discount;
             showValueMoneyPayment();
         }
     }
@@ -261,18 +315,18 @@ public class PaymentDiaLog {
                 money += tickets.get(i).getFare();
             }
 
-            totalMoney = money;
+            totalPayment = money;
             showValueMoneyPayment();
         }else {
-            btn_next.setVisibility(View.INVISIBLE);
+            btn_done.setVisibility(View.INVISIBLE);
             functionSystem.showDialogError(context.getResources().getString(R.string.payment_message_error_ticket));
         }
     }
 
     private void showValueMoneyPayment() {
         txt_money.setText(functionSystem.formatMoney.format(money) + " VNĐ");
-        txt_discount.setText(functionSystem.formatMoney.format(discout) + " VNĐ");
-        txt_total_money.setText(functionSystem.formatMoney.format(totalMoney) + " VNĐ");
+        txt_discount.setText(functionSystem.formatMoney.format(discount) + " VNĐ");
+        txt_total_payment.setText(functionSystem.formatMoney.format(totalPayment) + " VNĐ");
     }
 
 

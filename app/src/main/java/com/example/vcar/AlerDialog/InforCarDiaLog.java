@@ -71,8 +71,8 @@ public class InforCarDiaLog {
         img_image = view.findViewById(R.id.img_info_car_image);
         imgbtn_prev = view.findViewById(R.id.imgbtn_info_car_prev);
         imgbtn_next = view.findViewById(R.id.imgbtn_info_car_next);
-        btn_back = view.findViewById(R.id.btn_promotion_detail_back);
-        btn_next = view.findViewById(R.id.btn_payment_next);
+        btn_back = view.findViewById(R.id.btn_account_back);
+        btn_next = view.findViewById(R.id.btn_account_done);
         imgbtn_trans = view.findViewById(R.id.imgbtn_book_ticket_trans);
     }
 
@@ -82,7 +82,7 @@ public class InforCarDiaLog {
             txt_controlSea.setText(car.getNameSupplier() + " - " + car.getControlSea());
             txt_pointStop.setText(context.getResources().getString(R.string.info_car_pointStop) + " (" + (car.getPointStop().length + 2 )+ ")");
             txt_type.setText(context.getResources().getString(R.string.info_car_type) + ": " + car.getType() + " (" + car.getNumberSeat() + " chỗ)");
-            txt_fare.setText(context.getResources().getString(R.string.info_car_fare) + ": "+ car.getFare());
+            txt_fare.setText(context.getResources().getString(R.string.info_car_fare) + ": "+functionSystem.formatMoney.format(car.getFare()) + " VNĐ");
             showPointStop();
         }
     }

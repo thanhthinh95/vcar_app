@@ -234,8 +234,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/conlay_book_ticket_seatdiagram"
         android:layout_width="0dp"
-        android:layout_height="230dp"
+        android:layout_height="280dp"
         android:layout_marginTop="5dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/conlay_book_ticket_info_ticket">
@@ -248,6 +249,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/background_none"
+            android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/txt_book_ticket_seat_selected"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_book_ticket_seat_diagram"
@@ -260,6 +262,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/background_none"
+            android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/txt_book_ticket_seat_selected"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_book_ticket_seat_diagram"
@@ -410,7 +413,7 @@
         app:layout_constraintTop_toBottomOf="@+id/conlay_book_ticket_seatdiagram">
 
         <Button
-            android:id="@+id/btn_payment_next"
+            android:id="@+id/btn_account_done"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -424,7 +427,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/btn_promotion_detail_back"
+            android:id="@+id/btn_account_back"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"

@@ -15,7 +15,8 @@ public class ItemHomeSupplierCar {
     private String name;
     private String startPoint;
     private String endPoint;
-    private String fare;
+    private long maxFare;
+    private long minFare;
     private String numberPhone;
     private List<ItemHomeCar> listCar = new ArrayList<>();
 
@@ -23,15 +24,6 @@ public class ItemHomeSupplierCar {
     public ItemHomeSupplierCar() {
     }
 
-    public ItemHomeSupplierCar(String id, String name, String startPoint, String endPoint, String fare, String numberPhone, List<ItemHomeCar> listCar) {
-        this.id = id;
-        this.name = name;
-        this.startPoint = startPoint;
-        this.endPoint = endPoint;
-        this.fare = fare;
-        this.numberPhone = numberPhone;
-        this.listCar = listCar;
-    }
 
     public ItemHomeSupplierCar(String data) {
         try {
@@ -41,7 +33,8 @@ public class ItemHomeSupplierCar {
             this.startPoint = jsonObject.getString("startPoint");
             this.endPoint = jsonObject.getString("endPoint");
             this.startPoint = jsonObject.getString("startPoint");
-            this.fare = jsonObject.getString("fare");
+            this.maxFare = jsonObject.getLong("maxFare");
+            this.minFare = jsonObject.getLong("minFare");
             this.numberPhone = jsonObject.getString("numberPhone");
 
             JSONArray jsonArrayCar = new JSONArray(jsonObject.getString("cars"));
@@ -91,12 +84,20 @@ public class ItemHomeSupplierCar {
         this.endPoint = endPoint;
     }
 
-    public String getFare() {
-        return fare;
+    public long getMaxFare() {
+        return maxFare;
     }
 
-    public void setFare(String fare) {
-        this.fare = fare;
+    public void setMaxFare(long maxFare) {
+        this.maxFare = maxFare;
+    }
+
+    public long getMinFare() {
+        return minFare;
+    }
+
+    public void setMinFare(long minFare) {
+        this.minFare = minFare;
     }
 
     public String getNumberPhone() {

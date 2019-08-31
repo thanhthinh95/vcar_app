@@ -21,7 +21,7 @@ public class Ticket {
     private String endPoint;
     private Date timeTrip;
     private Date dateTrip;
-    private int vote;
+    private int vote = -9999;
     private int typeTrip;
     private String route;
     private String position;
@@ -55,6 +55,10 @@ public class Ticket {
 
             if(!jsonObject.isNull("dateTrip")){
                 this.dateTrip = dateFormat.parse(jsonObject.getString("dateTrip"));
+            }
+
+            if(!jsonObject.isNull("vote")){
+                this.vote = jsonObject.getInt("vote");
             }
 
             this.fare = jsonObject.getInt("fare");

@@ -3,14 +3,11 @@ package com.example.vcar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
@@ -133,7 +130,7 @@ public class FunctionSystem {
         alertDialog.show();
 
         ((TextView) view.findViewById(R.id.txt_dialog_error)).setText(value != null ? value: context.getString(R.string.check_error_server));
-        view.findViewById(R.id.btn_dialog_error).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btn_ticketvote_ok).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
                 alertDialog.dismiss();

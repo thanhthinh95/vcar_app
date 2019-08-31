@@ -86,7 +86,7 @@ public class SupplierCarAdapter extends RecyclerView.Adapter<SupplierCarAdapter.
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         ItemHomeSupplierCar itemRecyclerHome = listData.get(position);
         holder.txt_name.setText(itemRecyclerHome.getName());
-        holder.txt_fare.setText(itemRecyclerHome.getFare());
+        holder.txt_fare.setText(functionSystem.formatMoney.format(itemRecyclerHome.getMinFare()) + " - " + functionSystem.formatMoney.format(itemRecyclerHome.getMaxFare()));
         holder.txt_route.setText(itemRecyclerHome.getRoute());
         holder.txt_numberPhone.setText(itemRecyclerHome.getNumberPhone());
 

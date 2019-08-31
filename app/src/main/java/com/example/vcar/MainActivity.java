@@ -74,16 +74,16 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.navi_home:
-                        addFragment(new fragmentHome(), null);
+                        changeFragment(new fragmentHome());
                         return true;
                     case R.id.navi_ticket:
-                        addFragment(new fragmentTicket(), null);
+                        changeFragment(new fragmentTicket());
                         return true;
                     case R.id.navi_promotion:
-                        addFragment(new fragmentPromotion(), null);
+                        changeFragment(new fragmentPromotion());
                         return true;
                     case R.id.navi_account:
-                        addFragment(new fragmentAccount(), null);
+                        changeFragment(new fragmentAccount());
                         return true;
                 }
                 return false;
@@ -91,11 +91,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void addFragment(Fragment fragment, String valueStack) {
+    public void changeFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
-            .addToBackStack(valueStack)
-            .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-            .replace(R.id.main_constraint_layout, fragment, valueStack)
+            .replace(R.id.main_constraint_layout, fragment)
             .commit();
     }
 
@@ -115,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == getResources().getInteger(R.integer.request_check) && resultCode == getResources().getInteger(R.integer.result_check)){
             buildStart();
             idCustomer = data.getStringExtra("id");
-            addFragment(new fragmentHome(), null);
+            changeFragment(new fragmentHome());
         }else if(requestCode == getResources().getInteger(R.integer.request_check) && resultCode == getResources().getInteger(R.integer.result_login_finish)){
             finish();
         }

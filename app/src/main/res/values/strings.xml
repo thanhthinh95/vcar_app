@@ -34,6 +34,9 @@
     <integer name="request_check">862</integer>
     <integer name="result_check">876</integer>
 
+    <integer name="request_logout">632</integer>
+    <integer name="result_logout">236</integer>
+
     <integer name="request_login">122</integer>
     <integer name="result_login">221</integer>
     <integer name="result_login_finish">532</integer>
@@ -53,14 +56,14 @@
     <string name="message_password_repeat_invalid">Xác nhận mật khẩu không khớp</string>
 
 
-<!--    server-->T
-<!--    <string name="ipServer">108.160.129.143</string>-->
-<!--    <string name="host">http://108.160.129.143:4000/</string>-->
-<!--    <string name="host_api">http://108.160.129.143:4000/api/</string>-->
+<!--    server-->
+    <string name="ipServer">108.160.129.143</string>
+    <string name="host">http://108.160.129.143:4000/</string>
+    <string name="host_api">http://108.160.129.143:4000/api/</string>
 
-    <string name="ipServer">192.168.1.3</string>
-    <string name="host">http://192.168.1.3:4000/</string>
-    <string name="host_api">http://192.168.1.3:4000/api/</string>
+<!--    <string name="ipServer">192.168.1.3</string>-->
+<!--    <string name="host">http://192.168.1.3:4000/</string>-->
+<!--    <string name="host_api">http://192.168.1.3:4000/api/</string>-->
 
     <string name="token_api">ABC</string>
     <integer name="timeout_server">10000</integer>
@@ -151,12 +154,32 @@
     <string name="payment_message_error_ticket">Không có vé nào để thanh toán, thử lại sau</string>
 
 
-
-
     <!--    Promotion-->
     <string name="dialog_detail_promotion">Chi tiết khuyến mại</string>
     <string name="dialog_detail_note">Chương trình này có thể kết thúc sớm hơn dự kiến nếu đạt ngưỡng giới hạn ngân sách hoặc hết số lượng phân phối</string>
 
+<!--    Ticket Paid-->
+    <string name="ticket_paid_note">Di chuyển tới thiết bị quyét mã vạch hoặc nhấn OK để mô phỏng việc sử dụng vé</string>
+
+
+    <!--    Ticket vote-->
+    <string name="ticket_vote_note">Nếu có bất kỳ khiếu nại gì, xin hãy để lại ý kiến</string>
+
+    <!--    Account Info-->
+    <string name="account_info_title">Thông tin cá nhân</string>
+    <string name="account_name">Họ tên</string>
+    <string name="account_name_hint">VD: Nguyễn Thị Hòa</string>
+    <string name="account_gender">Giới tính</string>
+    <string name="account_number">Số điện thoại</string>
+    <string name="account_number_hint">VD: 0123456789</string>
+    <string name="account_email">Thư điện tử</string>
+    <string name="account_email_hint">VD: nguyenthihoa@vcar.com</string>
+
+    <!--    Account Change Pass-->
+    <string name="account_changepasss_title">Đổi mật khẩu</string>
+    <string name="account_old_pass">Mật khẫu cũ</string>
+    <string name="account_new_pass">Mật khẩu mới</string>
+    <string name="account_repeat_pass">Nhập lại mật mật khẩu mới</string>
 
 
 
